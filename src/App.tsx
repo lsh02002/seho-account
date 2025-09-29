@@ -5,7 +5,7 @@ import styled from "styled-components";
 import BottomNav from "./components/layouts/BottomNav";
 import DayAccountPage from "./pages/account/DayAccountPage";
 import AboutPage from "./pages/about/AboutPage";
-import SignupPage from "./pages/signup/SignupPage";
+import SignupPage from "./pages/user/SignupPage";
 import { useLogin } from "./context/loginContext";
 import { GetUserBookListApi } from "./api/sehomallApi";
 import AddTransPage from "./pages/account/AddTransPage";
@@ -14,7 +14,7 @@ import MonthAccountPage from "./pages/account/MonthAccountPage";
 import CalendarAccountPage from "./pages/account/CalendarAccountPage";
 import MemoPage from "./pages/account/MemoPage";
 import SummaryPage from "./pages/account/SummaryPage";
-import StaticsPage from "./pages/staticstics/StaticsPage";
+import StaticsPage from "./pages/statics/StaticsPage";
 
 function App() {
   const { setIsLogin, setMyBooks } = useLogin();
