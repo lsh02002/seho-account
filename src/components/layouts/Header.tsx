@@ -4,13 +4,14 @@ import { useLogin } from "../../context/loginContext";
 import { selectMenuType } from "../../types/type";
 import { Link } from "react-router-dom";
 import CalendarMonth from "../cards/CalendarMonth";
-import { GetUserBookListApi } from "../../api/sehomallApi";
+import { GetUserBookListApi, UserLogoutApi } from "../../api/sehomallApi";
 import TopNav from "./TopNav";
 
 const Header = () => {
-  const { isLogin } = useLogin();
+  const { isLogin, setIsLogin } = useLogin();
   const { myBooks, setMyBooks } = useLogin();
   const { setSelectMenu } = useLogin();
+  const { setTransList } = useLogin();
 
   useEffect(() => {
     GetUserBookListApi()
@@ -44,6 +45,23 @@ const Header = () => {
     setSelectMenu(myBooksMenu[0]);
   }, [myBooksMenu, setSelectMenu]);
 
+  const handleLogout = () => {
+    UserLogoutApi()
+      .then((res) => {
+        console.log(res);
+        localStorage.removeItem("nickname");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+
+        setIsLogin(false);
+
+        setTransList([]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -57,7 +75,7 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link to={"/logout"}>로그아웃</Link>
+              <LinkButton onClick={handleLogout}>로그아웃</LinkButton>
               <Link to={"/mypage"}>마이페이지</Link>
             </>
           )}
@@ -92,13 +110,22 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 `;
 
+const LinkButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  color: blue;
+`;
+
 const StyledUserInfo = styled.div`
-  width: 120px;
+  width: 130px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 0.9rem;
 
   a {
+    color: blue;
     text-decoration: none;
   }
 `;

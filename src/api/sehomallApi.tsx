@@ -86,7 +86,10 @@ const GetTransactionByBookIdAndTransactionId = (
   });
 };
 
-const ModifyTransactionApi = (transactionId: number, item: transactionRequestType) => {
+const ModifyTransactionApi = (
+  transactionId: number,
+  item: transactionRequestType
+) => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   return axios.put(`${BASE_URL}/api/transactions/${transactionId}`, item, {
@@ -95,18 +98,21 @@ const ModifyTransactionApi = (transactionId: number, item: transactionRequestTyp
       refreshToken,
     },
   });
-}
+};
 
 const DeleteTransactionApi = (bookId: number, transactionId: number) => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  return axios.delete(`${BASE_URL}/api/transactions/${bookId}/${transactionId}`, {
-    headers: {
-      accessToken,
-      refreshToken,
-    },
-  });
-}
+  return axios.delete(
+    `${BASE_URL}/api/transactions/${bookId}/${transactionId}`,
+    {
+      headers: {
+        accessToken,
+        refreshToken,
+      },
+    }
+  );
+};
 
 export {
   UserLoginApi,
