@@ -18,9 +18,11 @@ const Layout = ({
       <Wrapper style={isTopNav ? { paddingTop: "50px" } : {}}>
         {children}
       </Wrapper>
-      <AddTransButton onClick={() => navigator("/add-transaction")}>
-        +
-      </AddTransButton>
+      {isTopNav && (
+        <AddTransButton onClick={() => navigator("/add-transaction")}>
+          +
+        </AddTransButton>
+      )}
     </Container>
   );
 };
