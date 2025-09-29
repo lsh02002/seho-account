@@ -3,7 +3,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
 import { ko } from "date-fns/locale";
 import "react-datepicker/dist/react-datepicker.css";
-import { useLogin } from "../../context/loginContext";
+import { useLogin } from "../../../context/loginContext";
 import { addMonths, addYears, format } from "date-fns";
 
 registerLocale("ko", ko);

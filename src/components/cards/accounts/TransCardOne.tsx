@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { transactionResponseType } from "../../types/type";
+import { transactionResponseType } from "../../../types/type";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";

@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { transactionResponseType } from "../../../types/type";
-import TransCardOne from "../TransCardOne";
+import TransCardOne from "./TransCardOne";
 
 type AccountDayPagePropsType = {
   filteredList: transactionResponseType[];
@@ -45,7 +45,7 @@ const DayAccountCard = ({ filteredList, date }: AccountDayPagePropsType) => {
 
 export default DayAccountCard;
 
-const TodayTotal = styled.div`  
+const TodayTotal = styled.div`
   margin-top: 30px;
   width: 100%;
   display: flex;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Account from "../../assets/account.svg";
-import Review from "../../assets/review.svg";
+import Statics from "../../assets/statics.svg";
 import MyPage from "../../assets/my-page.svg";
 import Cart from "../../assets/cart.svg";
 import { Link } from "react-router-dom";
@@ -17,11 +17,11 @@ const BottomNav = () => {
           </div>
           <div>가계부</div>
         </IconLink>
-        <IconLink to={`/reviews?page=1&size=5`}>
+        <IconLink to={`/statics`}>
           <div>
-            <img src={Review} alt="" />
+            <img src={Statics} alt="" />
           </div>
-          <div>전체리뷰</div>
+          <div>통계</div>
         </IconLink>
         <IconLink to={`/mypage/REVIEWS?page=1&size=4`}>
           <div>

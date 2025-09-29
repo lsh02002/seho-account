@@ -14,6 +14,7 @@ import MonthAccountPage from "./pages/account/MonthAccountPage";
 import CalendarAccountPage from "./pages/account/CalendarAccountPage";
 import MemoPage from "./pages/account/MemoPage";
 import SummaryPage from "./pages/account/SummaryPage";
+import StaticsPage from "./pages/staticstics/StaticsPage";
 
 function App() {
   const { setIsLogin, setMyBooks } = useLogin();
@@ -57,6 +58,7 @@ function App() {
           <Route path="/month" element={<MonthAccountPage />} />
           <Route path="/summary" element={<SummaryPage />} />
           <Route path="/memo" element={<MemoPage />} />
+          <Route path="/statics" element={<StaticsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
