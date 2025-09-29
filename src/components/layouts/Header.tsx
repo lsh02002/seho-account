@@ -46,24 +46,25 @@ const Header = () => {
   }, [myBooksMenu, setSelectMenu]);
 
   const handleLogout = () => {
-    if(!window.confirm("로그아웃 하시겠습니까?")) {
+    if (!window.confirm("로그아웃 하시겠습니까?")) {
       return;
     }
-    
+
     UserLogoutApi()
       .then((res) => {
         console.log(res);
-        localStorage.removeItem("nickname");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-
-        setIsLogin(false);
-
-        setTransList([]);
       })
       .catch((err) => {
         console.error(err);
       });
+
+    localStorage.removeItem("nickname");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+    setIsLogin(false);
+
+    setTransList([]);
   };
 
   return (
