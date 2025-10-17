@@ -64,7 +64,7 @@ const AddTransactionApi = async (item: transactionRequestType) => {
 const GetTransactionsApi = async (bookId: number) => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
-  return axios.get(`${BASE_URL}/api/transactions/books/${bookId}`, {
+  return axios.get(`${BASE_URL}/api/transactions/books/${bookId}?page=0&size=3000`, {
     headers: {
       accessToken,
       refreshToken,
