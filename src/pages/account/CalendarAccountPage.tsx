@@ -21,22 +21,24 @@ const CalendarAccountPage = () => {
 
   // 거래 목록 로딩
   useEffect(() => {
-    GetTransactionsApi(parseInt(selectMenu?.value ?? "0"))
-      .then((res) => {
-        setTransList(res?.data?.content ?? []);
-        if (res?.headers?.accesstoken) {
-          localStorage.setItem("accessToken", res.headers.accesstoken);
-        }
-      })
-      .catch((err) => {
-        if (err?.response?.data?.detailMessage) {
-          console.error(err.response.data.detailMessage);
-        } else {
-          console.error(err?.message);
-        }
-      });
+    if (selectMenu?.value) {
+      GetTransactionsApi(parseInt(selectMenu?.value ?? "0"))
+        .then((res) => {
+          setTransList(res?.data?.content ?? []);
+          if (res?.headers?.accesstoken) {
+            localStorage.setItem("accessToken", res.headers.accesstoken);
+          }
+        })
+        .catch((err) => {
+          if (err?.response?.data?.detailMessage) {
+            console.error(err.response.data.detailMessage);
+          } else {
+            console.error(err?.message);
+          }
+        });
 
-    setIsDayDate(true);
+      setIsDayDate(true);
+    }
   }, [selectMenu?.value, setIsDayDate, setTransList]);
 
   // 날짜별 수입/지출 합계

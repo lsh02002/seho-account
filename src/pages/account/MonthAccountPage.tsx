@@ -15,24 +15,26 @@ const MonthAccountPage = () => {
   const { setIsDayDate } = useLogin();
 
   useEffect(() => {
-    GetTransactionsApi(parseInt(selectMenu?.value ?? "0"))
-      .then((res) => {
-        console.log(res);
-        setTransList(res?.data?.content ?? []);
+    if (selectMenu?.value) {
+      GetTransactionsApi(parseInt(selectMenu?.value ?? "0"))
+        .then((res) => {
+          console.log(res);
+          setTransList(res?.data?.content ?? []);
 
-        if (res?.headers?.accesstoken) {
-          localStorage.setItem("accessToken", res?.headers?.accesstoken);
-        }
-      })
-      .catch((err) => {
-        if (err?.response?.data?.detailMessage) {
-          console.error(err.response.data.detailMessage);
-        } else {
-          console.error(err?.message);
-        }
-      });
+          if (res?.headers?.accesstoken) {
+            localStorage.setItem("accessToken", res?.headers?.accesstoken);
+          }
+        })
+        .catch((err) => {
+          if (err?.response?.data?.detailMessage) {
+            console.error(err.response.data.detailMessage);
+          } else {
+            console.error(err?.message);
+          }
+        });
 
-    setIsDayDate(false);
+      setIsDayDate(false);
+    }
   }, [selectMenu?.value, setIsDayDate, setTransList]);
 
   const yearTransList = transList?.filter((t: transactionResponseType) =>
