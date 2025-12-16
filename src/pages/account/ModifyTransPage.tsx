@@ -4,7 +4,7 @@ import styled from "styled-components";
 import {
   DeleteTransactionApi,
   GetCategoriesApi,
-  GetTransactionByBookIdAndTransactionId,
+  GetTransactionByBookIdAndTransactionIdApi,
   ModifyTransactionApi,
 } from "../../api/sehomallApi";
 import {
@@ -70,7 +70,7 @@ const ModifyTransPage = () => {
   );
 
   useEffect(() => {
-    GetTransactionByBookIdAndTransactionId(
+    GetTransactionByBookIdAndTransactionIdApi(
       parseInt(bookId ?? "0"),
       parseInt(transactionId ?? "0")
     )

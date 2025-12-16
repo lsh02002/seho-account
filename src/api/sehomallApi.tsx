@@ -72,7 +72,7 @@ const GetTransactionsApi = async (bookId: number) => {
   });
 };
 
-const GetTransactionByBookIdAndTransactionId = (
+const GetTransactionByBookIdAndTransactionIdApi = (
   bookId: number,
   transactionId: number
 ) => {
@@ -123,7 +123,7 @@ export {
   GetCategoriesApi,
   AddTransactionApi,
   GetTransactionsApi,
-  GetTransactionByBookIdAndTransactionId,
+  GetTransactionByBookIdAndTransactionIdApi,
   ModifyTransactionApi,
   DeleteTransactionApi,
 };
