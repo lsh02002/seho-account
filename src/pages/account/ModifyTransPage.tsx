@@ -12,7 +12,6 @@ import {
   transactionRequestType,
   transactionResponseType,
 } from "../../types/type";
-import { useLogin } from "../../context/loginContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -21,7 +20,6 @@ import Back from "../../assets/back.svg";
 const ModifyTransPage = () => {
   const navigator = useNavigate();
   const { bookId, transactionId } = useParams();
-  const { selectMenu } = useLogin();
   const typeList = ["INCOME", "EXPENSE"];
   const [type, setType] = useState("INCOME");
   const [selectCateList, setSelectCateList] = useState<categoryType[]>([]);
@@ -121,7 +119,7 @@ const ModifyTransPage = () => {
       return;
     }
     DeleteTransactionApi(
-      parseInt(selectMenu?.value ?? "0"),
+      parseInt(bookId ?? "0"),
       parseInt(transactionId ?? "0")
     )
       .then((res) => {
@@ -146,7 +144,7 @@ const ModifyTransPage = () => {
     setErrMessage("");
 
     const transaction: transactionRequestType = {
-      bookId: parseInt(selectMenu?.value ?? "0"),
+      bookId: parseInt(bookId ?? "0"),
       categoryId: selected ?? 0,
       transactionDate: todayDate,
       amount,

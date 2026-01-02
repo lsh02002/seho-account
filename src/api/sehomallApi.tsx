@@ -35,7 +35,7 @@ const GetUserInfoApi = async () => {
   });
 };
 
-const GetUserBookListApi = async () => {
+const GetUserBookApi = async () => {
   const accessToken = localStorage.getItem("accessToken");
   const refreshToken = localStorage.getItem("refreshToken");
   return axios.get(`${BASE_URL}/api/books/user`, {
@@ -119,7 +119,7 @@ export {
   UserLogoutApi,
   UserSignupApi,
   GetUserInfoApi,
-  GetUserBookListApi,
+  GetUserBookApi,
   GetCategoriesApi,
   AddTransactionApi,
   GetTransactionsApi,

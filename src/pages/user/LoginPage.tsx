@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../components/layouts/Layout";
 import { useLogin } from "../../context/loginContext";
-import { GetUserBookListApi, UserLoginApi } from "../../api/sehomallApi";
+import { GetUserBookApi, UserLoginApi } from "../../api/sehomallApi";
 
 const LoginPage = () => {
-  const { setIsLogin, setMyBooks } = useLogin();
+  const { setIsLogin, setMyBook } = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,9 +32,9 @@ const LoginPage = () => {
         localStorage.setItem("accessToken", res.headers.accesstoken);
         localStorage.setItem("refreshToken", res.headers.refreshtoken);
 
-        GetUserBookListApi()
+        GetUserBookApi()
           .then((res) => {
-            setMyBooks(res?.data?.content ?? []);
+            setMyBook(res?.data ?? null);
 
             if (res?.headers?.accesstoken) {
               localStorage.setItem("accessToken", res?.headers?.accesstoken);

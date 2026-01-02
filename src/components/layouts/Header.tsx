@@ -1,23 +1,21 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useLogin } from "../../context/loginContext";
-import { selectMenuType } from "../../types/type";
 import { Link } from "react-router-dom";
 import CalendarMonth from "../cards/accounts/CalendarMonth";
-import { GetUserBookListApi, UserLogoutApi } from "../../api/sehomallApi";
+import { GetUserBookApi, UserLogoutApi } from "../../api/sehomallApi";
 import TopNav from "./TopNav";
 
 const Header = () => {
   const { isLogin, setIsLogin } = useLogin();
-  const { myBooks, setMyBooks } = useLogin();
-  const { setSelectMenu } = useLogin();
+  const { setMyBook } = useLogin();
   const { setTransList } = useLogin();
 
   useEffect(() => {
-    GetUserBookListApi()
+    GetUserBookApi()
       .then((res) => {
         console.log(res);
-        setMyBooks(res?.data?.content ?? []);
+        setMyBook(res?.data ?? null);
 
         if (res?.headers?.accesstoken) {
           localStorage.setItem("accessToken", res?.headers?.accesstoken);
@@ -30,20 +28,7 @@ const Header = () => {
           console.error(err?.message);
         }
       });
-  }, [setMyBooks]);
-
-  const myBooksMenu: selectMenuType[] = useMemo(
-    () =>
-      (myBooks ?? []).map((book) => ({
-        value: book.id.toString(),
-        label: book.name,
-      })),
-    [myBooks]
-  );
-
-  useEffect(() => {
-    setSelectMenu(myBooksMenu[0]);
-  }, [myBooksMenu, setSelectMenu]);
+  }, [setMyBook]);
 
   const handleLogout = () => {
     if (!window.confirm("로그아웃 하시겠습니까?")) {

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const AddTransPage = () => {
   const navigator = useNavigate();
 
-  const { selectMenu } = useLogin();
+  const { myBook } = useLogin();
   const typeList = ["INCOME", "EXPENSE"];
   const [type, setType] = useState("INCOME");
   const [selectedCateList, setSelectedCateList] = useState<categoryType[]>([]);
@@ -78,7 +78,7 @@ const AddTransPage = () => {
     setErrMessage("");
 
     const transaction: transactionRequestType = {
-      bookId: parseInt(selectMenu?.value ?? "0"),
+      bookId: myBook?.id ?? 0,
       categoryId: selectedCategory,
       transactionDate: todayDate ?? "",
       amount,

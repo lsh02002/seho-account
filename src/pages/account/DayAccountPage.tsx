@@ -9,13 +9,13 @@ import DayAccountCard from "../../components/cards/accounts/DayAccountCard";
 import NoTransactions from "../../components/layouts/NoTransactions";
 
 const DayAccountPage = () => {
-  const { selectMenu, startDate } = useLogin();
+  const { myBook, startDate } = useLogin();
   const { transList, setTransList } = useLogin();
   const { setIsDayDate } = useLogin();
 
   useEffect(() => {
-    if (selectMenu?.value) {
-      GetTransactionsApi(parseInt(selectMenu?.value ?? "0"))
+    if (myBook) {
+      GetTransactionsApi(myBook.id ?? "0")
         .then((res) => {
           console.log(res);
           setTransList(res?.data?.content ?? []);
@@ -34,7 +34,7 @@ const DayAccountPage = () => {
 
       setIsDayDate(true);
     }
-  }, [selectMenu?.value, setIsDayDate, setTransList]);
+  }, [myBook, setIsDayDate, setTransList]);
 
   const monthTransList = transList?.filter((t: transactionResponseType) =>
     isSameMonth(parseISO(t.transactionDate), startDate!)

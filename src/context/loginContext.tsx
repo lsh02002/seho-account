@@ -6,15 +6,13 @@ import React, {
   type ReactNode,
   useContext,
 } from "react";
-import { bookType, selectMenuType, transactionResponseType } from "../types/type";
+import { bookType, transactionResponseType } from "../types/type";
 
 export type LoginContextValue = {
   isLogin: boolean;
   setIsLogin: Dispatch<SetStateAction<boolean>>;
-  myBooks: bookType[];
-  setMyBooks: Dispatch<SetStateAction<bookType[]>>;
-  selectMenu: selectMenuType | null;
-  setSelectMenu: Dispatch<SetStateAction<selectMenuType | null>>;
+  myBook: bookType | null;
+  setMyBook: Dispatch<SetStateAction<bookType | null>>;
   startDate: Date | null;
   setStartDate: (d: Date | null) => void;
   startMonth: Date | null;
@@ -29,8 +27,7 @@ const LoginContext = createContext<LoginContextValue | undefined>(undefined);
 
 const LoginProvider = ({ children }: { children: ReactNode }) => {
   const [isLogin, setIsLogin] = useState(false);
-  const [myBooks, setMyBooks] = useState<bookType[]>([]);
-  const [selectMenu, setSelectMenu] = useState<selectMenuType | null>(null);
+  const [myBook, setMyBook] = useState<bookType | null>(null);  
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [startMonth, setStartMonth] = useState<Date | null>(new Date());
   const [transList, setTransList] = useState<transactionResponseType[]>([]);
@@ -39,10 +36,8 @@ const LoginProvider = ({ children }: { children: ReactNode }) => {
   const value: LoginContextValue = {
     isLogin,
     setIsLogin,
-    myBooks,
-    setMyBooks,
-    selectMenu,
-    setSelectMenu,
+    myBook,
+    setMyBook,
     startDate,
     setStartDate,
     startMonth,

@@ -7,7 +7,7 @@ import DayAccountPage from "./pages/account/DayAccountPage";
 import AboutPage from "./pages/about/AboutPage";
 import SignupPage from "./pages/user/SignupPage";
 import { useLogin } from "./context/loginContext";
-import { GetUserBookListApi } from "./api/sehomallApi";
+import { GetUserBookApi } from "./api/sehomallApi";
 import AddTransPage from "./pages/account/AddTransPage";
 import ModifyTransPage from "./pages/account/ModifyTransPage";
 import MonthAccountPage from "./pages/account/MonthAccountPage";
@@ -17,7 +17,7 @@ import SummaryPage from "./pages/account/SummaryPage";
 import StaticsPage from "./pages/statics/StaticsPage";
 
 function App() {
-  const { setIsLogin, setMyBooks } = useLogin();
+  const { setIsLogin, setMyBook } = useLogin();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -27,9 +27,9 @@ function App() {
   }, [setIsLogin]);
 
   useEffect(() => {
-    GetUserBookListApi()
+    GetUserBookApi()
       .then((res) => {
-        setMyBooks(res?.data?.content ?? []);
+        setMyBook(res?.data ?? null);
 
         if (res?.headers?.accesstoken) {
           localStorage.setItem("accessToken", res?.headers?.accesstoken);
@@ -42,7 +42,7 @@ function App() {
           console.error(err?.message);
         }
       });
-  }, [setMyBooks]);
+  }, [setMyBook]);
 
   return (
     <Container>

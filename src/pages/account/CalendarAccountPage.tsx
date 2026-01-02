@@ -12,7 +12,7 @@ import { transactionResponseType } from "../../types/type";
 import DayAccountCard from "../../components/cards/accounts/DayAccountCard";
 
 const CalendarAccountPage = () => {
-  const { selectMenu, transList, setTransList, startDate, setIsDayDate } =
+  const { myBook, transList, setTransList, startDate, setIsDayDate } =
     useLogin();
 
   const calendarRef = useRef<FullCalendar | null>(null);
@@ -21,8 +21,8 @@ const CalendarAccountPage = () => {
 
   // 거래 목록 로딩
   useEffect(() => {
-    if (selectMenu?.value) {
-      GetTransactionsApi(parseInt(selectMenu?.value ?? "0"))
+    if (myBook) {
+      GetTransactionsApi(myBook.id ?? "0")
         .then((res) => {
           setTransList(res?.data?.content ?? []);
           if (res?.headers?.accesstoken) {
@@ -39,7 +39,7 @@ const CalendarAccountPage = () => {
 
       setIsDayDate(true);
     }
-  }, [selectMenu?.value, setIsDayDate, setTransList]);
+  }, [myBook, setIsDayDate, setTransList]);
 
   // 날짜별 수입/지출 합계
   const dailySummary = useMemo(() => {
