@@ -1,56 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useLogin } from "../../context/loginContext";
 import { Link } from "react-router-dom";
 import CalendarMonth from "../cards/accounts/CalendarMonth";
-import { GetUserBookApi, UserLogoutApi } from "../../api/sehomallApi";
 import TopNav from "./TopNav";
 
 const Header = () => {
-  const { isLogin, setIsLogin } = useLogin();
-  const { setMyBook } = useLogin();
-  const { setTransList } = useLogin();
+  const { isLogin } = useLogin();
 
-  useEffect(() => {
-    GetUserBookApi()
-      .then((res) => {
-        console.log(res);
-        setMyBook(res?.data ?? null);
-
-        if (res?.headers?.accesstoken) {
-          localStorage.setItem("accessToken", res?.headers?.accesstoken);
-        }
-      })
-      .catch((err) => {
-        if (err?.response?.data?.detailMessage) {
-          console.error(err.response.data.detailMessage);
-        } else {
-          console.error(err?.message);
-        }
-      });
-  }, [setMyBook]);
-
-  const handleLogout = () => {
-    if (!window.confirm("로그아웃 하시겠습니까?")) {
-      return;
-    }
-
-    UserLogoutApi()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
-    localStorage.removeItem("nickname");
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-
-    setIsLogin(false);
-
-    setTransList([]);
-  };
+  const handleLogout = () => {};
 
   return (
     <Container>

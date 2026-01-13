@@ -5,7 +5,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import styled from "styled-components";
 import { useLogin } from "../../context/loginContext";
-import { GetTransactionsApi } from "../../api/sehomallApi";
 import { format, parseISO, isValid as isValidDate } from "date-fns";
 import koLocale from "@fullcalendar/core/locales/ko";
 import { transactionResponseType } from "../../types/type";
@@ -22,21 +21,6 @@ const CalendarAccountPage = () => {
   // 거래 목록 로딩
   useEffect(() => {
     if (myBook) {
-      GetTransactionsApi(myBook.id ?? "0")
-        .then((res) => {
-          setTransList(res?.data?.content ?? []);
-          if (res?.headers?.accesstoken) {
-            localStorage.setItem("accessToken", res.headers.accesstoken);
-          }
-        })
-        .catch((err) => {
-          if (err?.response?.data?.detailMessage) {
-            console.error(err.response.data.detailMessage);
-          } else {
-            console.error(err?.message);
-          }
-        });
-
       setIsDayDate(true);
     }
   }, [myBook, setIsDayDate, setTransList]);

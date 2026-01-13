@@ -22,10 +22,10 @@ export type selectMenuType = {
 export type categoryType = {
   id: number;
   name: string;
-  parentId: number;
+  parentId?: number;
   type: string;
   createdAt: string;
-  updateAt: string;
+  updatedAt: string;
 };
 
 export type transactionRequestType = {

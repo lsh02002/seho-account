@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Layout from "../../components/layouts/Layout";
 import styled from "styled-components";
-import { GetTransactionsApi } from "../../api/sehomallApi";
 import { useLogin } from "../../context/loginContext";
 import { format, isSameYear, parseISO } from "date-fns";
 import { transactionResponseType } from "../../types/type";
@@ -10,32 +9,15 @@ import NoTransactions from "../../components/layouts/NoTransactions";
 
 const MonthAccountPage = () => {
   const { myBook, startMonth } = useLogin();
-  const { transList, setTransList } = useLogin();
+  const { transList } = useLogin();
 
   const { setIsDayDate } = useLogin();
 
   useEffect(() => {
     if (myBook) {
-      GetTransactionsApi(myBook.id ?? "0")
-        .then((res) => {
-          console.log(res);
-          setTransList(res?.data?.content ?? []);
-
-          if (res?.headers?.accesstoken) {
-            localStorage.setItem("accessToken", res?.headers?.accesstoken);
-          }
-        })
-        .catch((err) => {
-          if (err?.response?.data?.detailMessage) {
-            console.error(err.response.data.detailMessage);
-          } else {
-            console.error(err?.message);
-          }
-        });
-
       setIsDayDate(false);
     }
-  }, [myBook, setIsDayDate, setTransList]);
+  }, [myBook, setIsDayDate]);
 
   const yearTransList = transList?.filter((t: transactionResponseType) =>
     isSameYear(parseISO(t.transactionDate), startMonth!)

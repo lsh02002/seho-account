@@ -6,7 +6,10 @@ import React, {
   type ReactNode,
   useContext,
 } from "react";
-import { bookType, transactionResponseType } from "../types/type";
+import { bookType, categoryType, transactionResponseType } from "../types/type";
+import { transactionData } from "../components/data/transactionData";
+import { booksData } from "../components/data/booksData";
+import { categoriesData } from "../components/data/categoriesData";
 
 export type LoginContextValue = {
   isLogin: boolean;
@@ -18,20 +21,27 @@ export type LoginContextValue = {
   startMonth: Date | null;
   setStartMonth: (d: Date | null) => void;
   transList: transactionResponseType[];
-  setTransList: (tl: transactionResponseType[]) => void;
+  setTransList: Dispatch<SetStateAction<transactionResponseType[]>>;
   isDayDate: boolean;
   setIsDayDate: (i: boolean) => void;
+  selectedCateList: categoryType[];
+  setSelectedCateList: (i: categoryType[]) => void;
+  selectedCategory: number;
+  setSelectedCategory: (i: number) => void;
 };
 
 const LoginContext = createContext<LoginContextValue | undefined>(undefined);
 
 const LoginProvider = ({ children }: { children: ReactNode }) => {
   const [isLogin, setIsLogin] = useState(false);
-  const [myBook, setMyBook] = useState<bookType | null>(null);  
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [startMonth, setStartMonth] = useState<Date | null>(new Date());
-  const [transList, setTransList] = useState<transactionResponseType[]>([]);
-  const [isDayDate, setIsDayDate] = useState(true);  
+  const [myBook, setMyBook] = useState<bookType | null>(booksData);  
+  const [startDate, setStartDate] = useState<Date | null>(new Date("2026-01-10"));
+  const [startMonth, setStartMonth] = useState<Date | null>(new Date("2026-01-10"));
+  const [transList, setTransList] = useState<transactionResponseType[]>(transactionData?.content);
+  const [isDayDate, setIsDayDate] = useState(true);
+
+  const [selectedCateList, setSelectedCateList] = useState<categoryType[]>(categoriesData);
+  const [selectedCategory, setSelectedCategory] = useState(0);
 
   const value: LoginContextValue = {
     isLogin,
@@ -46,6 +56,10 @@ const LoginProvider = ({ children }: { children: ReactNode }) => {
     setTransList,
     isDayDate,
     setIsDayDate,
+    selectedCateList,
+    setSelectedCateList,
+    selectedCategory,
+    setSelectedCategory,
   };
 
   return (

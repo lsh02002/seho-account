@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Layout from "../../components/layouts/Layout";
 import styled from "styled-components";
 import { transactionResponseType } from "../../types/type";
-import { GetTransactionsApi } from "../../api/sehomallApi";
 import { useLogin } from "../../context/loginContext";
 import { format, isSameMonth, parseISO } from "date-fns";
 import DayAccountCard from "../../components/cards/accounts/DayAccountCard";
@@ -10,31 +9,14 @@ import NoTransactions from "../../components/layouts/NoTransactions";
 
 const DayAccountPage = () => {
   const { myBook, startDate } = useLogin();
-  const { transList, setTransList } = useLogin();
+  const { transList } = useLogin();
   const { setIsDayDate } = useLogin();
 
   useEffect(() => {
     if (myBook) {
-      GetTransactionsApi(myBook.id ?? "0")
-        .then((res) => {
-          console.log(res);
-          setTransList(res?.data?.content ?? []);
-
-          if (res?.headers?.accesstoken) {
-            localStorage.setItem("accessToken", res?.headers?.accesstoken);
-          }
-        })
-        .catch((err) => {
-          if (err?.response?.data?.detailMessage) {
-            console.error(err.response.data.detailMessage);
-          } else {
-            console.error(err?.message);
-          }
-        });
-
       setIsDayDate(true);
     }
-  }, [myBook, setIsDayDate, setTransList]);
+  }, [myBook, setIsDayDate]);
 
   const monthTransList = transList?.filter((t: transactionResponseType) =>
     isSameMonth(parseISO(t.transactionDate), startDate!)

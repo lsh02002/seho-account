@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../../components/layouts/Layout";
 import styled from "styled-components";
-import { UserSignupApi } from "../../api/sehomallApi";
-import { useNavigate } from "react-router-dom";
-import { userSignupType } from "../../types/type";
 
 const SignupPage = () => {
   const [state, setState] = useState({
@@ -15,33 +12,32 @@ const SignupPage = () => {
 
   const [errMessage, setErrMessage] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const navigate = useNavigate();
-
+  
   const OnFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrMessage("");
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
   const OnSignup = () => {
-    const data: userSignupType = {
-      email: state.email,
-      password: state.password,
-      passwordConfirm: state.passwordConfirm,
-      nickname: state.nickname,
-    };
+    // const data: userSignupType = {
+    //   email: state.email,
+    //   password: state.password,
+    //   passwordConfirm: state.passwordConfirm,
+    //   nickname: state.nickname,
+    // };
 
-    UserSignupApi(data)
-      .then((res) => {
-        // console.log(res);
-        navigate("/login");
-      })
-      .catch((err) => {
-        if (err?.response?.data?.detailMessage) {
-          setErrMessage(err.response.data.detailMessage);
-        } else {
-            setErrMessage(err?.message);
-        }
-      });
+    // UserSignupApi(data)
+    //   .then((res) => {
+    //     // console.log(res);
+    //     navigate("/login");
+    //   })
+    //   .catch((err) => {
+    //     if (err?.response?.data?.detailMessage) {
+    //       setErrMessage(err.response.data.detailMessage);
+    //     } else {
+    //         setErrMessage(err?.message);
+    //     }
+    //   });
   };
 
   return (

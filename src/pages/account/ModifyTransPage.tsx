@@ -1,28 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Layout from "../../components/layouts/Layout";
 import styled from "styled-components";
-import {
-  DeleteTransactionApi,
-  GetCategoriesApi,
-  GetTransactionByBookIdAndTransactionIdApi,
-  ModifyTransactionApi,
-} from "../../api/sehomallApi";
-import {
-  categoryType,
-  transactionRequestType,
-  transactionResponseType,
-} from "../../types/type";
+import { categoryType, transactionResponseType } from "../../types/type";
 import { useNavigate, useParams } from "react-router-dom";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
 import Back from "../../assets/back.svg";
+import { useLogin } from "../../context/loginContext";
 
 const ModifyTransPage = () => {
   const navigator = useNavigate();
   const { bookId, transactionId } = useParams();
   const typeList = ["INCOME", "EXPENSE"];
   const [type, setType] = useState("INCOME");
-  const [selectCateList, setSelectCateList] = useState<categoryType[]>([]);
+
+  const { transList, setTransList } = useLogin();
+
+  const { selectedCategory, selectedCateList } = useLogin();
+  const { myBook } = useLogin();
   const [selected, setSelected] = useState<number | undefined>(0);
   const [todayDate, setTodayDate] = useState("");
   const [amount, setAmount] = useState(0);
@@ -30,64 +23,31 @@ const ModifyTransPage = () => {
 
   const [errMessage, setErrMessage] = useState("");
 
-  useEffect(() => {
-    GetCategoriesApi()
-      .then((res) => {
-        console.log(res);
-        setSelectCateList(res.data);
-
-        if (res?.headers?.accesstoken) {
-          localStorage.setItem("accessToken", res?.headers?.accesstoken);
-        }
-      })
-      .catch((err) => {
-        if (err?.response?.data?.detailMessage) {
-          setErrMessage(err.response.data.detailMessage);
-        } else {
-          setErrMessage(err?.message);
-        }
-      });
-  }, []);
-
   const setTransaction = useCallback(
-    (transaction: transactionResponseType) => {
+    (transaction?: transactionResponseType) => {
+      if (!transaction) return;
+
       setSelected(
-        selectCateList?.find((cate) => cate.name === transaction?.categoryName)
+        selectedCateList?.find((cate) => cate.name === transaction.categoryName)
           ?.id ?? 0
       );
-      setTodayDate(
-        format(transaction.transactionDate, "yyyy. M. d. a h:mm:ss", {
-          locale: ko,
-        })
-      );
+
+      setTodayDate(new Date(transaction.transactionDate).toISOString());
+
       setAmount(transaction.amount);
       setType(transaction.type);
       setNote(transaction.note);
     },
-    [selectCateList]
+    [selectedCateList]
   );
 
   useEffect(() => {
-    GetTransactionByBookIdAndTransactionIdApi(
-      parseInt(bookId ?? "0"),
-      parseInt(transactionId ?? "0")
-    )
-      .then((res) => {
-        console.log(res);
-        setTransaction(res?.data);
-
-        if (res?.headers?.accesstoken) {
-          localStorage.setItem("accessToken", res?.headers?.accesstoken);
-        }
-      })
-      .catch((err) => {
-        if (err?.response?.data?.detailMessage) {
-          setErrMessage(err.response.data.detailMessage);
-        } else {
-          setErrMessage(err?.message);
-        }
-      });
-  }, [bookId, setTransaction, transactionId]);
+    setTransaction(
+      transList?.find(
+        (trans: transactionResponseType) => trans.id === Number(transactionId)
+      )
+    );
+  }, [bookId, setTransaction, transList, transactionId]);
 
   const handleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setErrMessage("");
@@ -118,63 +78,43 @@ const ModifyTransPage = () => {
     if (!window.confirm("정말로 삭제하시겠습니까?")) {
       return;
     }
-    DeleteTransactionApi(
-      parseInt(bookId ?? "0"),
-      parseInt(transactionId ?? "0")
-    )
-      .then((res) => {
-        console.log(res);
 
-        if (res?.headers?.accesstoken) {
-          localStorage.setItem("accessToken", res?.headers?.accesstoken);
-        }
-
-        navigator("/");
-      })
-      .catch((err) => {
-        if (err?.response?.data?.detailMessage) {
-          setErrMessage(err.response.data.detailMessage);
-        } else {
-          setErrMessage(err?.message);
-        }
-      });
+    setTransList((prev) =>
+      prev.filter(
+        (trans) =>
+          !(
+            trans.bookId === Number(bookId) &&
+            trans.id === Number(transactionId)
+          )
+      )
+    );
   };
 
   const handleRegister = () => {
     setErrMessage("");
 
-    const transaction: transactionRequestType = {
-      bookId: parseInt(bookId ?? "0"),
-      categoryId: selected ?? 0,
-      transactionDate: todayDate,
+    const transaction: transactionResponseType = {
+      id: Number(transactionId),
+      bookId: myBook?.id ?? 0,
+      categoryName:
+        selectedCateList?.find((cate) => cate.id === selectedCategory)?.name ??
+        "",
+      transactionDate: todayDate ?? "",
       amount,
       type,
       note,
       dedupeKey: "",
     };
 
-    ModifyTransactionApi(parseInt(transactionId ?? "0"), transaction)
-      .then((res) => {
-        console.log(res);
-        alert("수정을 성공했습니다.!");
-
-        if (res?.headers?.accesstoken) {
-          localStorage.setItem("accessToken", res?.headers?.accesstoken);
-        }
-      })
-      .catch((err) => {
-        if (err?.response?.data?.detailMessage) {
-          setErrMessage(err.response.data.detailMessage);
-        } else {
-          setErrMessage(err?.message);
-        }
-      });
+    setTransList((prev) =>
+      prev.map((obj) => (obj.id === Number(transactionId) ? transaction : obj))
+    );
   };
 
   return (
     <Layout>
       <Wrapper>
-        <BackImage onClick={()=>navigator(-1)} src={Back} alt="" />
+        <BackImage onClick={() => navigator(-1)} src={Back} alt="" />
         <h3>거래내용 수정</h3>
         <Label>지출/수입</Label>
         <SelectInput onChange={handleType} value={type}>
@@ -194,7 +134,7 @@ const ModifyTransPage = () => {
         />
         <Label>분류</Label>
         <SelectInput onChange={handleSelect} value={selected}>
-          {selectCateList
+          {selectedCateList
             ?.filter((item) => item.type === type)
             .map((item: categoryType) => (
               <option value={item.id} key={item.id}>

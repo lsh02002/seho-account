@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import Layout from "../../components/layouts/Layout";
-import { useLogin } from "../../context/loginContext";
-import { GetUserBookApi, UserLoginApi } from "../../api/sehomallApi";
 
 const LoginPage = () => {
-  const { setIsLogin, setMyBook } = useLogin();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMessage, setErrMessage] = useState("");
-
-  const navigate = useNavigate();
 
   const OnEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrMessage("");
@@ -24,41 +18,7 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
 
-  const OnLogin = () => {
-    UserLoginApi(email, password)
-      .then((res) => {
-        console.log("login ", res);
-        localStorage.setItem("nickname", res.data.data.nickname);
-        localStorage.setItem("accessToken", res.headers.accesstoken);
-        localStorage.setItem("refreshToken", res.headers.refreshtoken);
-
-        GetUserBookApi()
-          .then((res) => {
-            setMyBook(res?.data ?? null);
-
-            if (res?.headers?.accesstoken) {
-              localStorage.setItem("accessToken", res?.headers?.accesstoken);
-            }
-          })
-          .catch((err) => {
-            if (err?.response?.data?.detailMessage) {
-              alert(err.response.data.detailMessage);
-            } else {
-              alert(err?.message);
-            }
-          });
-
-        setIsLogin(true);
-        navigate("/");
-      })
-      .catch((err) => {
-        if (err?.response?.data?.detailMessage) {
-          setErrMessage(err.response.data.detailMessage);
-        } else {
-          setErrMessage(err?.message);
-        }
-      });
-  };
+  const OnLogin = () => {};
 
   return (
     <Layout>

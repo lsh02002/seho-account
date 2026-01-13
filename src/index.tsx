@@ -10,9 +10,9 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <BrowserRouter>
-    <LoginProvider>
+  <LoginProvider>
+    <BrowserRouter>
       <App />
-    </LoginProvider>
-  </BrowserRouter>
+    </BrowserRouter>
+  </LoginProvider>
 );
