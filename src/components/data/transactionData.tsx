@@ -266,7 +266,7 @@ export const transactionData = {
             "categoryName": "건강",
             "amount": 5000.00,
             "type": "EXPENSE",
-            "note": "가람신경정신과",
+            "note": "병원외래",
             "transactionDate": "2025-12-24T17:15:13",
             "dedupeKey": "1_5000_2025. 12. 24. 오후 5:15:13"
         },
