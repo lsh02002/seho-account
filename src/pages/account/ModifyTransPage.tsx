@@ -38,7 +38,7 @@ const ModifyTransPage = () => {
 
     setType(transaction.type);
     setSelected(
-      filteredCateList?.find((cate) => cate.name === transaction.categoryName)
+      selectedCateList?.find((cate) => cate.name === transaction.categoryName)
         ?.id ?? 0
     );
 
