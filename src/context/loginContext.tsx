@@ -25,7 +25,7 @@ export type LoginContextValue = {
   isDayDate: boolean;
   setIsDayDate: (i: boolean) => void;
   selectedCateList: categoryType[];
-  setSelectedCateList: (i: categoryType[]) => void;
+  setSelectedCateList: Dispatch<SetStateAction<categoryType[]>>;
   selectedCategory: number;
   setSelectedCategory: (i: number) => void;
 };

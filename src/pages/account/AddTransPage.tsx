@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Layout from "../../components/layouts/Layout";
 import styled from "styled-components";
 import { categoryType, transactionResponseType } from "../../types/type";
@@ -15,7 +15,7 @@ const AddTransPage = () => {
 
   const { transList, setTransList } = useLogin();
 
-  const { selectedCateList, setSelectedCateList } = useLogin();
+  const { selectedCateList } = useLogin();
   const { selectedCategory, setSelectedCategory } = useLogin();
 
   const [todayDate, setTodayDate] = useState(new Date().toISOString());
@@ -24,13 +24,14 @@ const AddTransPage = () => {
 
   const [errMessage, setErrMessage] = useState("");
 
-  useEffect(() => {
-    setSelectedCateList(
-      selectedCateList?.filter((cate: categoryType) => cate.type === type)
-    );
-    setSelectedCategory(selectedCateList[0]?.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type]);
+const filteredCateList = useMemo(
+  () => (selectedCateList ?? []).filter(c => c.type === type),
+  [selectedCateList, type]
+);
+
+useEffect(() => {
+  setSelectedCategory(filteredCateList[0]?.id);
+}, [filteredCateList, setSelectedCategory]);
 
   const handleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setErrMessage("");

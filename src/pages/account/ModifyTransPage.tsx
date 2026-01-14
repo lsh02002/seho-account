@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Layout from "../../components/layouts/Layout";
 import styled from "styled-components";
 import { categoryType, transactionResponseType } from "../../types/type";
@@ -14,7 +14,7 @@ const ModifyTransPage = () => {
 
   const { transList, setTransList } = useLogin();
 
-  const { selectedCategory, selectedCateList } = useLogin();
+  const { selectedCateList } = useLogin();
   const { myBook } = useLogin();
   const [selected, setSelected] = useState<number | undefined>(0);
   const [todayDate, setTodayDate] = useState("");
@@ -23,31 +23,31 @@ const ModifyTransPage = () => {
 
   const [errMessage, setErrMessage] = useState("");
 
-  const setTransaction = useCallback(
-    (transaction?: transactionResponseType) => {
-      if (!transaction) return;
-
-      setSelected(
-        selectedCateList?.find((cate) => cate.name === transaction.categoryName)
-          ?.id ?? 0
-      );
-
-      setTodayDate(new Date(transaction.transactionDate).toISOString());
-
-      setAmount(transaction.amount);
-      setType(transaction.type);
-      setNote(transaction.note);
-    },
-    [selectedCateList]
+  const filteredCateList = useMemo(
+    () => (selectedCateList ?? []).filter((c) => c.type === type),
+    [selectedCateList, type]
   );
 
-  useEffect(() => {
-    setTransaction(
-      transList?.find(
-        (trans: transactionResponseType) => trans.id === Number(transactionId)
-      )
+  const transaction = useMemo(
+    () => transList?.find((t) => t.id === Number(transactionId)),
+    [transList, transactionId]
+  );
+
+  useEffect(() => {    
+    if (!transaction) return;    
+
+    setType(transaction.type);
+    setSelected(
+      filteredCateList?.find((cate) => cate.name === transaction.categoryName)
+        ?.id ?? 0
     );
-  }, [bookId, setTransaction, transList, transactionId]);
+
+    setTodayDate(new Date(transaction.transactionDate).toISOString());
+
+    setAmount(transaction.amount);
+    setNote(transaction.note);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transList, transaction, transactionId]);
 
   const handleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setErrMessage("");
@@ -97,8 +97,7 @@ const ModifyTransPage = () => {
       id: Number(transactionId),
       bookId: myBook?.id ?? 0,
       categoryName:
-        selectedCateList?.find((cate) => cate.id === selectedCategory)?.name ??
-        "",
+        filteredCateList?.find((cate) => cate.id === selected)?.name ?? "",
       transactionDate: todayDate ?? "",
       amount,
       type,
@@ -134,13 +133,11 @@ const ModifyTransPage = () => {
         />
         <Label>분류</Label>
         <SelectInput onChange={handleSelect} value={selected}>
-          {selectedCateList
-            ?.filter((item) => item.type === type)
-            .map((item: categoryType) => (
-              <option value={item.id} key={item.id}>
-                {item.name}
-              </option>
-            ))}
+          {filteredCateList?.map((item: categoryType) => (
+            <option value={item.id} key={item.id}>
+              {item.name}
+            </option>
+          ))}
         </SelectInput>
         <Label>내용</Label>
         <TextInput type="text" value={note} onChange={handleNoteInput} />
