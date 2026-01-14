@@ -65,7 +65,7 @@ useEffect(() => {
       id: (transList[transList.length - 1]?.id ?? 0) + 1,      
       bookId: myBook?.id ?? 0,
       categoryName:
-        selectedCateList?.find((cate) => cate.id === selectedCategory)?.name ??
+        filteredCateList?.find((cate) => cate.id === selectedCategory)?.name ??
         "",
       transactionDate: todayDate ?? "",
       amount,
@@ -102,7 +102,7 @@ useEffect(() => {
         />
         <Label>분류</Label>
         <SelectInput onChange={handleSelect} value={selectedCategory}>
-          {selectedCateList?.map((item: categoryType) => (
+          {filteredCateList?.map((item: categoryType) => (
             <option value={item.id} key={item.id}>
               {item.name}
             </option>
