@@ -14,12 +14,13 @@ import CalendarAccountPage from "./pages/account/CalendarAccountPage";
 import MemoPage from "./pages/account/MemoPage";
 import SummaryPage from "./pages/account/SummaryPage";
 import StaticsPage from "./pages/statics/StaticsPage";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   const { setIsLogin } = useLogin();
 
   useEffect(() => {
-      setIsLogin(true);
+    setIsLogin(true);
   }, [setIsLogin]);
 
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="*" element={<div>페이지가 존재하지 않습니다.</div>} />
         </Routes>
         <BottomNav />
+        <Analytics />
       </Wrapper>
     </Container>
   );
