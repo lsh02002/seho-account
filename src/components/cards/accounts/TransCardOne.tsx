@@ -1,14 +1,22 @@
 import React, { memo } from "react";
 import { transactionResponseType } from "../../../types/type";
-import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { registerLocale } from "react-datepicker";
+import { useLogin } from "../../../context/loginContext";
+import { useModalManager } from "../../../context/ModalContext";
 
 registerLocale("ko", ko);
 
 const TransCardOne = ({ item }: { item: transactionResponseType }) => {
-  const navigator = useNavigate();
+  const { setTransactionId } = useLogin();
+  const { openModal } = useModalManager();
+
+  const handleModifyTrans = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setTransactionId(item?.id);
+    openModal("transmodify");
+  };
 
   return (
     <div
@@ -17,7 +25,7 @@ const TransCardOne = ({ item }: { item: transactionResponseType }) => {
         fontSize: "0.85rem",
         cursor: "pointer",
       }}
-      onClick={() => navigator(`/modify-transaction/${item.bookId}/${item.id}`)}
+      onClick={handleModifyTrans}
     >
       <div className="w-100">{item.categoryName}</div>
 

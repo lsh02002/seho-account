@@ -16,6 +16,7 @@ import AboutPage from "./pages/about/AboutPage";
 import BottomNav from "./components/layouts/BottomNav";
 
 import { useLogin } from "./context/loginContext";
+import { layout } from "./theme/theme";
 
 function App() {
   const { setIsLogin } = useLogin();
@@ -29,7 +30,7 @@ function App() {
       <div
         className="d-flex justify-content-center align-items-center flex-column w-100"
         style={{
-          maxWidth: "1100px",
+          maxWidth: layout.maxWidth,
         }}
       >
         <Routes>

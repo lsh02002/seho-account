@@ -96,7 +96,7 @@ const MonthAccountCard = ({ filteredList, date }: MonthCardPropsType) => {
 
   return (
     <div className="bg-white rounded mt-4">
-      <div className="p-3 m-2 mb-3">
+      <div className="m-4 mb-4">
         <div className="text-danger mb-1">
           월별: {format(monthDate, "yyyy.MM", { locale: ko })}
         </div>

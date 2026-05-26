@@ -8,13 +8,15 @@ import { format, parseISO, isValid as isValidDate } from "date-fns";
 import koLocale from "@fullcalendar/core/locales/ko";
 import { transactionResponseType } from "../../types/type";
 import DayAccountCard from "../../components/cards/accounts/DayAccountCard";
+import { useModalManager } from "../../context/ModalContext";
 
 const CalendarAccountPage = () => {
   const { myBook, transList, setTransList, startDate, setIsDayDate } =
     useLogin();
 
+  const { openModal, closeModal, isOpen } = useModalManager();
+
   const calendarRef = useRef<FullCalendar | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalDate, setModalDate] = useState<Date | null>(new Date());
 
   // 거래 목록 로딩
@@ -92,7 +94,7 @@ const CalendarAccountPage = () => {
 
   const handleDateClick = (arg: { date: Date }) => {
     setModalDate(arg.date);
-    setIsModalOpen(true);
+    openModal("calendardate");
   };
 
   const handleEventClick = (arg: { event: any; jsEvent: MouseEvent }) => {
@@ -100,7 +102,7 @@ const CalendarAccountPage = () => {
     const clickedDate = arg.event.start; // dailyEvents는 하루짜리 allDay라 start가 해당 날짜
     if (clickedDate) {
       setModalDate(clickedDate);
-      setIsModalOpen(true);
+      openModal("calendardate");
     }
   };
 
@@ -222,37 +224,65 @@ const CalendarAccountPage = () => {
           }}
         />
 
-        {isModalOpen && (
-          <div
-            className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
-            style={{
-              background: "rgba(0, 0, 0, 0.45)",
-              zIndex: 1100,
-            }}
-            onClick={() => setIsModalOpen(false)}
-          >
-            <div
-              className="bg-white d-flex flex-column overflow-hidden p-4 m-2"
-              style={{
-                width: "min(520px, 92vw)",
-                maxHeight: "80vh",
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <DayAccountCard
-                filteredList={filteredList}
-                date={format(modalDate ?? "", "yyyy-MM-dd")}
-              />
+        <>
+  {/* backdrop */}
+  <div
+    className="position-fixed top-0 start-0 w-100 h-100"
+    style={{
+      background: "rgba(0, 0, 0, 0.45)",
+      zIndex: 100,
+      opacity: isOpen("calendardate") ? 1 : 0,
+      pointerEvents: isOpen("calendardate") ? "auto" : "none",
+      transition: "opacity 220ms ease",
+    }}
+    onClick={() => closeModal("calendardate")}
+  />
 
-              <button
-                className="btn btn-secondary mt-3"
-                onClick={() => setIsModalOpen(false)}
-              >
-                닫기
-              </button>
-            </div>
-          </div>
-        )}
+  {/* slide modal */}
+  <div
+    className="position-fixed top-0 end-0 bg-white d-flex flex-column overflow-hidden"
+    style={{
+      width: "min(520px, 92vw)",
+      height: "100vh",
+      zIndex: 101,
+      transform: isOpen("calendardate")
+        ? "translateX(0)"
+        : "translateX(100%)",
+      transition: "transform 220ms ease",
+      boxShadow: "-4px 0 12px rgba(0,0,0,0.12)",
+      pointerEvents: isOpen("calendardate") ? "auto" : "none",
+    }}
+    // 주의!! 무슨 의미인지 모르겠음!!
+    onClick={(e) => e.stopPropagation()}
+  >
+    <div className="d-flex justify-content-between align-items-center p-3 border-bottom">
+      <h2 className="m-0 fs-5 fw-bold">
+        {format(modalDate ?? new Date(), "yyyy-MM-dd")}
+      </h2>
+
+      <button
+        type="button"
+        className="btn border-0 bg-transparent fs-3 lh-1"
+        onClick={() => closeModal("calendardate")}
+        aria-label="닫기"
+      >
+        ×
+      </button>
+    </div>
+
+    <div
+      className="flex-grow-1 overflow-y-auto p-3"
+      style={{
+        WebkitOverflowScrolling: "touch",
+      }}
+    >
+      <DayAccountCard
+        filteredList={filteredList}
+        date={format(modalDate ?? new Date(), "yyyy-MM-dd")}
+      />
+    </div>
+  </div>
+</>
       </div>
     </Layout>
   );

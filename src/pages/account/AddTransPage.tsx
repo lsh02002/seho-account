@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import Layout from "../../components/layouts/Layout";
 import { categoryType, transactionResponseType } from "../../types/type";
 import { useLogin } from "../../context/loginContext";
 import Back from "../../assets/back.svg";
@@ -79,83 +78,79 @@ const AddTransPage = () => {
   };
 
   return (
-    <Layout>
-      <div className="w-100 pt-5">
-        <img
-          onClick={() => navigator(-1)}
-          src={Back}
-          alt="뒤로가기"
-          style={{
-            width: "30px",
-            cursor: "pointer",
-          }}
-        />
+    <div className="m-3" style={{boxSizing: "border-box"}}>
+      <img
+        onClick={() => navigator(-1)}
+        src={Back}
+        alt="뒤로가기"
+        style={{
+          width: "30px",
+          cursor: "pointer",
+        }}
+      />
 
-        <h3 className="mt-3 mb-3">거래내용 입력</h3>
+      <h3 className="mt-3 mb-3">거래내용 입력</h3>
 
-        <label className="form-label mt-1">지출/수입</label>
-        <select className="form-select" onChange={handleType} value={type}>
-          {typeList?.map((type, index) => (
-            <option value={type} key={index}>
-              {type}
-            </option>
-          ))}
-        </select>
+      <label className="form-label mt-1">지출/수입</label>
+      <select className="form-select" onChange={handleType} value={type}>
+        {typeList?.map((type, index) => (
+          <option value={type} key={index}>
+            {type}
+          </option>
+        ))}
+      </select>
 
-        <label className="form-label mt-2">날짜</label>
-        <input
-          className="form-control"
-          type="text"
-          value={todayDate}
-          onChange={handleDateInput}
-        />
+      <label className="form-label mt-2">날짜</label>
+      <input
+        className="form-control"
+        type="text"
+        value={todayDate}
+        onChange={handleDateInput}
+      />
 
-        <label className="form-label mt-2">금액</label>
-        <input
-          className="form-control"
-          type="number"
-          value={amount}
-          onChange={handleAmountInput}
-        />
+      <label className="form-label mt-2">금액</label>
+      <input
+        className="form-control"
+        type="number"
+        value={amount}
+        onChange={handleAmountInput}
+      />
 
-        <label className="form-label mt-2">분류</label>
-        <select
-          className="form-select"
-          onChange={handleSelect}
-          value={selectedCategory}
+      <label className="form-label mt-2">분류</label>
+      <select
+        className="form-select"
+        onChange={handleSelect}
+        value={selectedCategory}
+      >
+        {filteredCateList?.map((item: categoryType) => (
+          <option value={item.id} key={item.id}>
+            {item.name}
+          </option>
+        ))}
+      </select>
+
+      <label className="form-label mt-2">내용</label>
+      <textarea
+        className="form-control"
+        value={note}
+        onChange={handleNoteInput}
+        rows={2}
+      />
+
+      <div className="w-100 d-flex flex-column align-items-end mt-4">
+        {errMessage && (
+          <div className="w-100 text-danger text-center mb-2">{errMessage}</div>
+        )}
+
+        <button
+          className="btn btn-secondary"
+          style={{ width: "100px" }}
+          onClick={handleRegister}
         >
-          {filteredCateList?.map((item: categoryType) => (
-            <option value={item.id} key={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-
-        <label className="form-label mt-2">내용</label>
-        <textarea
-          className="form-control"
-          value={note}
-          onChange={handleNoteInput}
-          rows={2}
-        />
-
-        <div className="w-100 d-flex flex-column align-items-end mt-4">
-          {errMessage && (
-            <div className="w-100 text-danger text-center mb-2">
-              {errMessage}
-            </div>
-          )}
-
-          <button
-            className="btn btn-secondary"
-            style={{ width: "100px" }}
-            onClick={handleRegister}
-          >
-            저장하기
-          </button>
-        </div>
+          저장하기
+        </button>
       </div>
-    </Layout>
+    </div>
   );
 };
 

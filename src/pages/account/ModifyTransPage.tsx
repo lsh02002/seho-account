@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import Layout from "../../components/layouts/Layout";
 import { categoryType, transactionResponseType } from "../../types/type";
 import { useNavigate, useParams } from "react-router-dom";
 import Back from "../../assets/back.svg";
 import { useLogin } from "../../context/loginContext";
 
-const ModifyTransPage = () => {
+const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
   const navigator = useNavigate();
   const { bookId, transactionId } = useParams();
   const typeList = ["INCOME", "EXPENSE"];
@@ -28,8 +27,9 @@ const ModifyTransPage = () => {
   );
 
   const transaction = useMemo(
-    () => transList?.find((t) => t.id === Number(transactionId)),
-    [transList, transactionId],
+    () =>
+      transList?.find((t) => t.id === Number(transModalId ?? transactionId)),
+    [transList, transModalId, transactionId],
   );
 
   useEffect(() => {
@@ -110,98 +110,92 @@ const ModifyTransPage = () => {
   };
 
   return (
-    <Layout>
-      <div className="w-100 pt-5">
-        <img
-          onClick={() => navigator(-1)}
-          src={Back}
-          alt="뒤로가기"
+    <div className="m-3" style={{ boxSizing: "border-box" }}>
+      <img
+        onClick={() => navigator(-1)}
+        src={Back}
+        alt="뒤로가기"
+        style={{
+          width: "30px",
+          cursor: "pointer",
+        }}
+      />
+
+      <h3 className="mt-3 mb-3">거래내용 수정</h3>
+
+      <label className="form-label mt-1">지출/수입</label>
+
+      <select className="form-select" onChange={handleType} value={type}>
+        {typeList?.map((type, index) => (
+          <option value={type} key={index}>
+            {type}
+          </option>
+        ))}
+      </select>
+
+      <label className="form-label mt-2">날짜</label>
+
+      <input
+        className="form-control"
+        type="text"
+        value={todayDate}
+        onChange={handleDateInput}
+      />
+
+      <label className="form-label mt-2">금액</label>
+
+      <input
+        className="form-control"
+        type="number"
+        value={amount}
+        onChange={handleAmountInput}
+      />
+
+      <label className="form-label mt-2">분류</label>
+
+      <select className="form-select" onChange={handleSelect} value={selected}>
+        {filteredCateList?.map((item: categoryType) => (
+          <option value={item.id} key={item.id}>
+            {item.name}
+          </option>
+        ))}
+      </select>
+
+      <label className="form-label mt-2">내용</label>
+
+      <textarea
+        className="form-control"
+        value={note}
+        onChange={handleNoteInput}
+        rows={3}
+      />
+
+      {errMessage && (
+        <div className="w-100 text-danger text-center pt-2">{errMessage}</div>
+      )}
+
+      <div className="w-100 d-flex justify-content-end align-items-center pt-4">
+        <button
+          className="btn btn-danger me-3"
           style={{
-            width: "30px",
-            cursor: "pointer",
+            width: "100px",
           }}
-        />
-
-        <h3 className="mt-3 mb-3">거래내용 수정</h3>
-
-        <label className="form-label mt-1">지출/수입</label>
-
-        <select className="form-select" onChange={handleType} value={type}>
-          {typeList?.map((type, index) => (
-            <option value={type} key={index}>
-              {type}
-            </option>
-          ))}
-        </select>
-
-        <label className="form-label mt-2">날짜</label>
-
-        <input
-          className="form-control"
-          type="text"
-          value={todayDate}
-          onChange={handleDateInput}
-        />
-
-        <label className="form-label mt-2">금액</label>
-
-        <input
-          className="form-control"
-          type="number"
-          value={amount}
-          onChange={handleAmountInput}
-        />
-
-        <label className="form-label mt-2">분류</label>
-
-        <select
-          className="form-select"
-          onChange={handleSelect}
-          value={selected}
+          onClick={handleDelete}
         >
-          {filteredCateList?.map((item: categoryType) => (
-            <option value={item.id} key={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
+          삭제하기
+        </button>
 
-        <label className="form-label mt-2">내용</label>
-
-        <textarea
-          className="form-control"
-          value={note}
-          onChange={handleNoteInput}
-          rows={3}
-        />
-
-        {errMessage && (
-          <div className="w-100 text-danger text-center pt-2">{errMessage}</div>
-        )}
-
-        <div className="w-100 d-flex justify-content-end align-items-center pt-4">
-          <button
-            className="btn btn-danger me-3"
-            style={{
-              width: "100px",
-            }}
-            onClick={handleDelete}
-          >
-            삭제하기
-          </button>
-
-          <button
-            className="btn btn-secondary"
-            style={{
-              width: "100px",
-            }}
-            onClick={handleRegister}
-          >
-            저장하기
-          </button>
-        </div>
+        <button
+          className="btn btn-secondary"
+          style={{
+            width: "100px",
+          }}
+          onClick={handleRegister}
+        >
+          저장하기
+        </button>
       </div>
-    </Layout>
+    </div>
   );
 };
 

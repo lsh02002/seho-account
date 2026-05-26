@@ -25,8 +25,8 @@ const DayAccountCard = ({ filteredList, date }: AccountDayPagePropsType) => {
   }, [filteredList]);
 
   return (
-    <div className="bg-white mt-4">
-      <div className="rounded p-3 w-100 d-flex flex-column align-items-center">
+    <div className="bg-white rounded p-4 mt-4">
+      <div className="rounded w-100 d-flex flex-column align-items-center">
         <div className="w-100 text-danger mb-2">기입일: {date}</div>
 
         <div className="w-100 d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">

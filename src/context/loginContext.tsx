@@ -20,6 +20,8 @@ export type LoginContextValue = {
   setStartDate: (d: Date | null) => void;
   startMonth: Date | null;
   setStartMonth: (d: Date | null) => void;
+  transactionId: number | null;
+  setTransactionId: Dispatch<SetStateAction<number | null>>;
   transList: transactionResponseType[];
   setTransList: Dispatch<SetStateAction<transactionResponseType[]>>;
   isDayDate: boolean;
@@ -34,13 +36,21 @@ const LoginContext = createContext<LoginContextValue | undefined>(undefined);
 
 const LoginProvider = ({ children }: { children: ReactNode }) => {
   const [isLogin, setIsLogin] = useState(false);
-  const [myBook, setMyBook] = useState<bookType | null>(booksData);  
-  const [startDate, setStartDate] = useState<Date | null>(new Date("2026-01-10"));
-  const [startMonth, setStartMonth] = useState<Date | null>(new Date("2026-01-10"));
-  const [transList, setTransList] = useState<transactionResponseType[]>(transactionData?.content);
+  const [myBook, setMyBook] = useState<bookType | null>(booksData);
+  const [startDate, setStartDate] = useState<Date | null>(
+    new Date("2026-01-10"),
+  );
+  const [startMonth, setStartMonth] = useState<Date | null>(
+    new Date("2026-01-10"),
+  );
+  const [transactionId, setTransactionId] = useState<number | null>(null);
+  const [transList, setTransList] = useState<transactionResponseType[]>(
+    transactionData?.content,
+  );
   const [isDayDate, setIsDayDate] = useState(true);
 
-  const [selectedCateList, setSelectedCateList] = useState<categoryType[]>(categoriesData);
+  const [selectedCateList, setSelectedCateList] =
+    useState<categoryType[]>(categoriesData);
   const [selectedCategory, setSelectedCategory] = useState(0);
 
   const value: LoginContextValue = {
@@ -52,6 +62,8 @@ const LoginProvider = ({ children }: { children: ReactNode }) => {
     setStartDate,
     startMonth,
     setStartMonth,
+    transactionId,
+    setTransactionId,
     transList,
     setTransList,
     isDayDate,

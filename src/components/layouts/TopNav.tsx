@@ -5,8 +5,44 @@ import Revenue from "../../assets/revenue.svg";
 import Memo from "../../assets/memo.svg";
 
 import { Link } from "react-router-dom";
+import { useModalManager } from "../../context/ModalContext";
+
+const menus = [
+  {
+    to: "/",
+    icon: Day,
+    alt: "일일",
+    label: "일일",
+  },
+  {
+    to: "/month",
+    icon: Month,
+    alt: "월별",
+    label: "월별",
+  },
+  {
+    to: "/calendar",
+    icon: Calendar,
+    alt: "달력",
+    label: "달력",
+  },
+  {
+    to: "/summary",
+    icon: Revenue,
+    alt: "결산",
+    label: "결산",
+  },
+  {
+    to: "/memo",
+    icon: Memo,
+    alt: "메모",
+    label: "메모",
+  },
+];
 
 const TopNav = () => {
+  const { hasOpenModal, closeTopModal } = useModalManager();
+
   return (
     <nav
       className="d-flex justify-content-between align-items-center position-fixed start-0 end-0 bg-white"
@@ -21,63 +57,30 @@ const TopNav = () => {
         className="pb-3 d-flex justify-content-evenly align-items-center w-100 border-bottom bg-white"
         style={{
           height: "50px",
-          // fontSize: "0.8rem",
         }}
       >
-        <Link
-          to="/"
-          className="d-flex flex-column align-items-center text-decoration-none text-dark"
-        >
-          <div>
-            <img src={Day} alt="일일" style={{ width: "1.5rem" }} />
-          </div>
+        {menus.map((menu) => (
+          <Link
+            key={menu.to}
+            to={menu.to}
+            className="d-flex flex-column align-items-center text-decoration-none text-dark"
+            onClick={(e) => {
+              e.stopPropagation(); // 필요하면 유지
 
-          <div>일일</div>
-        </Link>
+              if (hasOpenModal) {
+                e.preventDefault();
+                closeTopModal();
+                return;
+              }
+            }}
+          >
+            <div>
+              <img src={menu.icon} alt={menu.alt} style={{ width: "1.5rem" }} />
+            </div>
 
-        <Link
-          to="/month"
-          className="d-flex flex-column align-items-center text-decoration-none text-dark"
-        >
-          <div>
-            <img src={Month} alt="월별" style={{ width: "1.5rem" }} />
-          </div>
-
-          <div>월별</div>
-        </Link>
-
-        <Link
-          to="/calendar"
-          className="d-flex flex-column align-items-center text-decoration-none text-dark"
-        >
-          <div>
-            <img src={Calendar} alt="달력" style={{ width: "1.5rem" }} />
-          </div>
-
-          <div>달력</div>
-        </Link>
-
-        <Link
-          to="/summary"
-          className="d-flex flex-column align-items-center text-decoration-none text-dark"
-        >
-          <div>
-            <img src={Revenue} alt="결산" style={{ width: "1.5rem" }} />
-          </div>
-
-          <div>결산</div>
-        </Link>
-
-        <Link
-          to="/memo"
-          className="d-flex flex-column align-items-center text-decoration-none text-dark"
-        >
-          <div>
-            <img src={Memo} alt="메모" style={{ width: "1.5rem" }} />
-          </div>
-
-          <div>메모</div>
-        </Link>
+            <div>{menu.label}</div>
+          </Link>
+        ))}
       </div>
     </nav>
   );

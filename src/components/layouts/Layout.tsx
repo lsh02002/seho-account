@@ -1,6 +1,10 @@
 import React from "react";
 import Header from "./Header";
-import { useNavigate } from "react-router-dom";
+import SlidePanel from "./SlidePanel";
+import { useLogin } from "../../context/loginContext";
+import ModifyTransPage from "../../pages/account/ModifyTransPage";
+import AddTransPage from "../../pages/account/AddTransPage";
+import { useModalManager } from "../../context/ModalContext";
 
 const Layout = ({
   isTopNav = false,
@@ -9,27 +13,41 @@ const Layout = ({
   isTopNav?: boolean;
   children: React.ReactNode;
 }) => {
-  const navigator = useNavigate();
+  const { transactionId } = useLogin();
+  const { openModal, hasOpenModal } = useModalManager();
+
+  const handleAddTrans = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    openModal("transadd");
+  };
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center w-100"
+      className="d-flex justify-content-center align-items-center w-100 p-4"
       style={{
         paddingBottom: "100px",
       }}
     >
       {isTopNav && <Header />}
 
+      <SlidePanel title="거래내역 수정" zIndex={200} name="transmodify">
+        <ModifyTransPage transModalId={transactionId ?? 0} />
+      </SlidePanel>
+
+      <SlidePanel title="거래내역 기입" zIndex={200} name="transadd">
+        <AddTransPage />
+      </SlidePanel>
+
       <div
-        className="d-flex justify-content-center align-items-center w-100 mx-3"
+        className="d-flex justify-content-center align-items-center w-100"
         style={isTopNav ? { paddingTop: "80px" } : {}}
       >
         {children}
       </div>
 
-      {isTopNav && (
+      {isTopNav && !hasOpenModal && (
         <button
-          onClick={() => navigator("/add-transaction")}
+          onClick={handleAddTrans}
           className="btn position-fixed rounded-circle"
           style={{
             width: "60px",

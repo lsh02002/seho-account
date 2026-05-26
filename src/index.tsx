@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { LoginProvider } from "./context/loginContext";
+import { ModalProvider } from "./context/ModalContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -12,8 +13,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <LoginProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ModalProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ModalProvider>
   </LoginProvider>,
 );
