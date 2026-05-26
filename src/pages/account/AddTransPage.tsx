@@ -20,8 +20,6 @@ const AddTransPage = () => {
   const [amount, setAmount] = useState(0);
   const [note, setNote] = useState("");
 
-  const [errMessage, setErrMessage] = useState("");
-
   const filteredCateList = useMemo(
     () => (selectedCateList ?? []).filter((c) => c.type === type),
     [selectedCateList, type],
@@ -32,33 +30,26 @@ const AddTransPage = () => {
   }, [filteredCateList, setSelectedCategory]);
 
   const handleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setErrMessage("");
     setType(e.target.value);
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setErrMessage("");
     setSelectedCategory(parseInt(e.target.value));
   };
 
   const handleDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrMessage("");
     setTodayDate(e.target.value);
   };
 
   const handleAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrMessage("");
     setAmount(parseFloat(e.target.value));
   };
 
   const handleNoteInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setErrMessage("");
     setNote(e.target.value);
   };
 
   const handleRegister = () => {
-    setErrMessage("");
-
     const transaction: transactionResponseType = {
       id: (transList[transList.length - 1]?.id ?? 0) + 1,
       bookId: myBook?.id ?? 0,
@@ -78,7 +69,7 @@ const AddTransPage = () => {
   };
 
   return (
-    <div className="m-3" style={{boxSizing: "border-box"}}>
+    <div className="m-3" style={{ boxSizing: "border-box" }}>
       <img
         onClick={() => navigator(-1)}
         src={Back}
@@ -138,10 +129,6 @@ const AddTransPage = () => {
       />
 
       <div className="w-100 d-flex flex-column align-items-end mt-4">
-        {errMessage && (
-          <div className="w-100 text-danger text-center mb-2">{errMessage}</div>
-        )}
-
         <button
           className="btn btn-secondary"
           style={{ width: "100px" }}

@@ -19,8 +19,6 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
   const [amount, setAmount] = useState(0);
   const [note, setNote] = useState("");
 
-  const [errMessage, setErrMessage] = useState("");
-
   const filteredCateList = useMemo(
     () => (selectedCateList ?? []).filter((c) => c.type === type),
     [selectedCateList, type],
@@ -49,27 +47,22 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
   }, [transList, transaction, transactionId]);
 
   const handleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setErrMessage("");
     setType(e.target.value);
   };
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setErrMessage("");
     setSelected(parseInt(e.target.value));
   };
 
   const handleDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrMessage("");
     setTodayDate(e.target.value);
   };
 
   const handleAmountInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setErrMessage("");
     setAmount(parseFloat(e.target.value));
   };
 
   const handleNoteInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setErrMessage("");
     setNote(e.target.value);
   };
 
@@ -90,8 +83,6 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
   };
 
   const handleRegister = () => {
-    setErrMessage("");
-
     const transaction: transactionResponseType = {
       id: Number(transactionId),
       bookId: myBook?.id ?? 0,
@@ -169,10 +160,6 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
         onChange={handleNoteInput}
         rows={3}
       />
-
-      {errMessage && (
-        <div className="w-100 text-danger text-center pt-2">{errMessage}</div>
-      )}
 
       <div className="w-100 d-flex justify-content-end align-items-center pt-4">
         <button
