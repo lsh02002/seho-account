@@ -23,12 +23,11 @@ const DayAccountPage = () => {
   }, [myBook, setIsDayDate]);
 
   const monthTransList = useMemo(() => {
-    if (weekFilteredList.length > 0) {
-      return weekFilteredList;
-    }
-
-    return transList?.filter((t: transactionResponseType) =>
-      isSameMonth(parseISO(t.transactionDate), startDate!),
+    return (
+      weekFilteredList ??
+      transList?.filter((t: transactionResponseType) =>
+        isSameMonth(parseISO(t.transactionDate), startDate!),
+      )
     );
   }, [weekFilteredList, transList, startDate]);
 
