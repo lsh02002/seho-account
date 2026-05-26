@@ -11,7 +11,7 @@ const DayAccountPage = () => {
   const location = useLocation();
 
   const weekFilteredList = useMemo(() => {
-    return location.state?.weekFilteredList ?? [];
+    return location.state?.weekFilteredList;
   }, [location.state]);
 
   const { myBook, startDate, transList, setIsDayDate } = useLogin();
