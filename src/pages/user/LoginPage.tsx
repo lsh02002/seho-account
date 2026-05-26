@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import Layout from "../../components/layouts/Layout";
 
 const LoginPage = () => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMessage, setErrMessage] = useState("");
@@ -22,92 +20,47 @@ const LoginPage = () => {
 
   return (
     <Layout>
-      <Main>
-        <Title>LOGIN</Title>
-        <Email>
-          <div>이메일</div>
+      <div
+        className="d-flex justify-content-center align-items-center flex-column border p-4 mt-5"
+        style={{
+          width: "360px",
+          boxSizing: "border-box",
+        }}
+      >
+        <h2 className="fw-normal mb-3" style={{ margin: "5px" }}>
+          LOGIN
+        </h2>
+
+        <div className="w-100">
+          <div style={{ fontSize: "14px" }}>이메일</div>
+
           <input
+            className="form-control"
             type="email"
             value={email}
             onChange={(e) => OnEmailChange(e)}
           />
-        </Email>
-        <Password>
-          <div>패스워드</div>
+        </div>
+
+        <div className="w-100 pt-3">
+          <div style={{ fontSize: "14px" }}>패스워드</div>
+
           <input
+            className="form-control"
             type="password"
             value={password}
             onChange={(e) => OnPasswordChange(e)}
           />
-        </Password>
-        {errMessage && <Error>{errMessage}</Error>}
-        <Login onClick={OnLogin}>로그인</Login>
-      </Main>
+        </div>
+
+        {errMessage && <span className="text-danger pt-3">{errMessage}</span>}
+
+        <button className="btn btn-secondary w-100 mt-4" onClick={OnLogin}>
+          로그인
+        </button>
+      </div>
     </Layout>
   );
 };
 
 export default LoginPage;
-
-const Main = styled.div`
-  margin-top: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 360px;
-  border: 1px solid lightgray;
-  padding: 20px;
-  box-sizing: border-box;
-`;
-
-const Title = styled.h2`
-  font-weight: normal;
-  margin: 5px;
-`;
-
-const Email = styled.div`
-  width: 100%;
-  overflow: hidden;
-  div {
-    font-size: 14px;
-  }
-  input[type="email"] {
-    width: 95%;
-    padding: 5px;
-    outline: none;
-  }
-`;
-
-const Password = styled.div`
-  padding-top: 20px;
-  width: 100%;
-  overflow: hidden;
-  div {
-    font-size: 14px;
-  }
-  input[type="password"] {
-    width: 95%;
-    padding: 5px;
-    outline: none;
-  }
-`;
-
-const Login = styled.button`
-  margin-top: 20px;
-  width: 100%;
-  border: none;
-  padding: 10px;
-  background-color: gray;
-  cursor: pointer;
-  color: white;
-  transition: 0.2s;
-  &:hover {
-    background-color: lightgray;
-  }
-`;
-
-const Error = styled.span`
-  color: red;
-  padding: 20px 0 0 0;
-`;

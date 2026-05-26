@@ -7,9 +7,9 @@ import React, {
   useContext,
 } from "react";
 import { bookType, categoryType, transactionResponseType } from "../types/type";
-import { transactionData } from "../components/data/transactionData";
-import { booksData } from "../components/data/booksData";
-import { categoriesData } from "../components/data/categoriesData";
+import { transactionData } from "../data/transactionData";
+import { booksData } from "../data/booksData";
+import { categoriesData } from "../data/categoriesData";
 
 export type LoginContextValue = {
   isLogin: boolean;

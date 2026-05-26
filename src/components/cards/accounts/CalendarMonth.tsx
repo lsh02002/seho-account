@@ -1,8 +1,10 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
-import styled from "styled-components";
 import { ko } from "date-fns/locale";
+
 import "react-datepicker/dist/react-datepicker.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import { useLogin } from "../../../context/loginContext";
 import { addMonths, addYears, format } from "date-fns";
 
@@ -10,14 +12,43 @@ registerLocale("ko", ko);
 
 const CalendarMonth = () => {
   const { startDate, setStartDate, startMonth, setStartMonth } = useLogin();
+
   const { isDayDate } = useLogin();
 
-  const HiddenInput = forwardRef<HTMLInputElement>((props, ref) => (
-    <input {...props} ref={ref} style={{ display: "none" }} />
-  ));
-
   return (
-    <Container>
+    <div className="bg-white d-flex justify-content-center">
+      <style>
+        {`
+          .only-header .react-datepicker__month-container {
+            width: auto;
+          }
+
+          .only-header .react-datepicker__month,
+          .only-header .react-datepicker__month-wrapper,
+          .only-header .react-datepicker__year,
+          .only-header .react-datepicker__year-wrapper,
+          .only-header .react-datepicker__day-names,
+          .only-header .react-datepicker__week,
+          .only-header .react-datepicker__day,
+          .only-header .react-datepicker__triangle,
+          .only-header .react-datepicker__current-month {
+            display: none !important;
+          }
+
+          .only-header.react-datepicker {
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+          }
+
+          .only-header .react-datepicker__header {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+          }
+        `}
+      </style>
+
       <DatePicker
         selected={isDayDate ? startDate : startMonth}
         onChange={
@@ -29,81 +60,43 @@ const CalendarMonth = () => {
         showMonthYearPicker
         inline
         locale="ko"
-        customInput={<HiddenInput />}
         calendarClassName="only-header"
-        renderCustomHeader={(
-          { date } // ← monthDate → date
-        ) => (
-          <>
+        renderCustomHeader={({ date }) => (
+          <div className="d-flex align-items-center justify-content-between px-2 py-1 w-100">
             <button
               type="button"
+              className="btn btn-link text-dark text-decoration-none p-0"
               onClick={
                 isDayDate
                   ? () => setStartDate(addMonths(date, -1))
                   : () => setStartMonth(addYears(date, -1))
               }
-              style={{ background: "none", border: "none", cursor: "pointer" }}
             >
               {"<"}
             </button>
-            <span>
+
+            <span className="fw-semibold">
               {format(date, isDayDate ? "yyyy년 M월" : "yyyy년", {
                 locale: ko,
               })}
             </span>
+
             <button
               type="button"
+              className="btn btn-link text-dark text-decoration-none p-0"
               onClick={
                 isDayDate
                   ? () => setStartDate(addMonths(date, 1))
                   : () => setStartMonth(addYears(date, 1))
               }
-              style={{ background: "none", border: "none", cursor: "pointer" }}
             >
               {">"}
             </button>
-          </>
+          </div>
         )}
       />
-    </Container>
+    </div>
   );
 };
 
 export default CalendarMonth;
-
-const Container = styled.div`
-  .only-header.react-datepicker {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    font-size: 1rem;
-  }
-
-  /* 상단 헤더 바탕/보더 제거 */
-  .only-header .react-datepicker__header {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  /* 월/연 텍스트 줄 마진/패딩 최소화(선택) */
-  .only-header .react-datepicker__header {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* 위에서 이미 쓰시던 숨김 규칙 유지 (월 그리드/연도 헤더 등) */
-  .only-header .react-datepicker-year-header {
-    display: none !important;
-  }
-  .only-header .react-datepicker__month-wrapper {
-    display: none !important;
-  }
-  .only-header .react-datepicker__header__dropdown,
-  .only-header .react-datepicker__current-month {
-    display: none !important;
-  }
-  .only-header .react-datepicker__triangle {
-    display: none !important;
-  }
-`;

@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Layout from "../../components/layouts/Layout";
-import styled from "styled-components";
 import { categoryType, transactionResponseType } from "../../types/type";
 import { useNavigate, useParams } from "react-router-dom";
 import Back from "../../assets/back.svg";
@@ -25,28 +24,28 @@ const ModifyTransPage = () => {
 
   const filteredCateList = useMemo(
     () => (selectedCateList ?? []).filter((c) => c.type === type),
-    [selectedCateList, type]
+    [selectedCateList, type],
   );
 
   const transaction = useMemo(
     () => transList?.find((t) => t.id === Number(transactionId)),
-    [transList, transactionId]
+    [transList, transactionId],
   );
 
-  useEffect(() => {    
-    if (!transaction) return;    
+  useEffect(() => {
+    if (!transaction) return;
 
     setType(transaction.type);
     setSelected(
       selectedCateList?.find((cate) => cate.name === transaction.categoryName)
-        ?.id ?? 0
+        ?.id ?? 0,
     );
 
     setTodayDate(new Date(transaction.transactionDate).toISOString());
 
     setAmount(transaction.amount);
     setNote(transaction.note);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transList, transaction, transactionId]);
 
   const handleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -69,7 +68,7 @@ const ModifyTransPage = () => {
     setAmount(parseFloat(e.target.value));
   };
 
-  const handleNoteInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNoteInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setErrMessage("");
     setNote(e.target.value);
   };
@@ -85,8 +84,8 @@ const ModifyTransPage = () => {
           !(
             trans.bookId === Number(bookId) &&
             trans.id === Number(transactionId)
-          )
-      )
+          ),
+      ),
     );
   };
 
@@ -106,126 +105,104 @@ const ModifyTransPage = () => {
     };
 
     setTransList((prev) =>
-      prev.map((obj) => (obj.id === Number(transactionId) ? transaction : obj))
+      prev.map((obj) => (obj.id === Number(transactionId) ? transaction : obj)),
     );
   };
 
   return (
     <Layout>
-      <Wrapper>
-        <BackImage onClick={() => navigator(-1)} src={Back} alt="" />
-        <h3>거래내용 수정</h3>
-        <Label>지출/수입</Label>
-        <SelectInput onChange={handleType} value={type}>
+      <div className="w-100 pt-5">
+        <img
+          onClick={() => navigator(-1)}
+          src={Back}
+          alt="뒤로가기"
+          style={{
+            width: "30px",
+            cursor: "pointer",
+          }}
+        />
+
+        <h3 className="mt-3 mb-3">거래내용 수정</h3>
+
+        <label className="form-label mt-1">지출/수입</label>
+
+        <select className="form-select" onChange={handleType} value={type}>
           {typeList?.map((type, index) => (
             <option value={type} key={index}>
               {type}
             </option>
           ))}
-        </SelectInput>
-        <Label>날짜</Label>
-        <DateInput type="text" value={todayDate} onChange={handleDateInput} />
-        <Label>금액</Label>
-        <AmountInput
+        </select>
+
+        <label className="form-label mt-2">날짜</label>
+
+        <input
+          className="form-control"
+          type="text"
+          value={todayDate}
+          onChange={handleDateInput}
+        />
+
+        <label className="form-label mt-2">금액</label>
+
+        <input
+          className="form-control"
           type="number"
           value={amount}
           onChange={handleAmountInput}
         />
-        <Label>분류</Label>
-        <SelectInput onChange={handleSelect} value={selected}>
+
+        <label className="form-label mt-2">분류</label>
+
+        <select
+          className="form-select"
+          onChange={handleSelect}
+          value={selected}
+        >
           {filteredCateList?.map((item: categoryType) => (
             <option value={item.id} key={item.id}>
               {item.name}
             </option>
           ))}
-        </SelectInput>
-        <Label>내용</Label>
-        <TextInput type="text" value={note} onChange={handleNoteInput} />
-        {errMessage && <ErrorText>{errMessage}</ErrorText>}
-        <ButtonWrapper>
-          <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
-          <SaveButton onClick={handleRegister}>저장하기</SaveButton>
-        </ButtonWrapper>
-      </Wrapper>
+        </select>
+
+        <label className="form-label mt-2">내용</label>
+
+        <textarea
+          className="form-control"
+          value={note}
+          onChange={handleNoteInput}
+          rows={3}
+        />
+
+        {errMessage && (
+          <div className="w-100 text-danger text-center pt-2">{errMessage}</div>
+        )}
+
+        <div className="w-100 d-flex justify-content-end align-items-center pt-4">
+          <button
+            className="btn btn-danger me-3"
+            style={{
+              width: "100px",
+            }}
+            onClick={handleDelete}
+          >
+            삭제하기
+          </button>
+
+          <button
+            className="btn btn-secondary"
+            style={{
+              width: "100px",
+            }}
+            onClick={handleRegister}
+          >
+            저장하기
+          </button>
+        </div>
+      </div>
     </Layout>
   );
 };
 
 export default ModifyTransPage;
-
-const Wrapper = styled.div`
-  width: 100%;
-  padding-top: 50px;
-`;
-
-const BackImage = styled.img`
-  width: 30px;
-`;
-
-const Label = styled.label`
-  width: 100%;
-  display: inline-block;
-  box-sizing: border-box;
-  margin-top: 5px;
-`;
-
-const DateInput = styled.input`
-  width: 100%;
-  box-sizing: border-box;
-  padding: 5px;
-`;
-
-const AmountInput = styled.input`
-  width: 100%;
-  box-sizing: border-box;
-  padding: 5px;
-`;
-
-const SelectInput = styled.select`
-  width: 100%;
-  display: flex;
-  padding: 5px;
-`;
-
-const TextInput = styled.input`
-  width: 100%;
-  box-sizing: border-box;
-  padding: 5px;
-`;
-
-const ErrorText = styled.div`
-  width: 100%;
-  color: red;
-  display: flex;
-  justify-content: center;
-  box-sizing: border-box;
-  padding-top: 10px;
-`;
-
-const ButtonWrapper = styled.div`
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-top: 20px;
-`;
-
-const SaveButton = styled.button`
-  width: 100px;
-  border: none;
-  background-color: gray;
-  color: white;
-  font-size: 1rem;
-  padding: 5px;
-`;
-
-const DeleteButton = styled.button`
-  width: 100px;
-  border: none;
-  background-color: red;
-  color: white;
-  font-size: 1rem;
-  padding: 5px;
-  margin-right: 20px;
-`;

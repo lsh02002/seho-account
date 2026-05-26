@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import { transactionResponseType } from "../../../types/type";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -10,53 +9,37 @@ registerLocale("ko", ko);
 
 const TransCardOne = ({ item }: { item: transactionResponseType }) => {
   const navigator = useNavigate();
+
   return (
-    <Container
+    <div
+      className="d-flex justify-content-between align-items-center w-100 border-top py-2"
+      style={{
+        fontSize: "0.85rem",
+        cursor: "pointer",
+      }}
       onClick={() => navigator(`/modify-transaction/${item.bookId}/${item.id}`)}
     >
-      <div>{item.categoryName}</div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div className="w-100">{item.categoryName}</div>
+
+      <div className="w-100 d-flex flex-column">
         <span>{item.note}</span>
-        <span style={{ fontSize: "0.7rem" }}>
-          {format(item.transactionDate, "a hh:mm", { locale: ko })}
+
+        <span className="text-secondary" style={{ fontSize: "0.7rem" }}>
+          {format(item.transactionDate, "a hh:mm", {
+            locale: ko,
+          })}
         </span>
       </div>
-      <div>
+
+      <div className="w-100 text-end">
         {item.type === "INCOME" ? (
-          <IncomeSpan>{item.amount.toLocaleString()}원</IncomeSpan>
+          <span className="text-primary">{item.amount.toLocaleString()}원</span>
         ) : (
-          <ExpenseSpan>{item.amount.toLocaleString()}원</ExpenseSpan>
+          <span className="text-danger">{item.amount.toLocaleString()}원</span>
         )}
       </div>
-    </Container>
+    </div>
   );
 };
 
 export default memo(TransCardOne);
-
-const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  border-top: 1px solid #e5e7eb;
-  box-sizing: border-box;
-  font-size: 0.8rem;
-
-  div {
-    width: 100%;
-    padding: 8px 0;
-  }
-
-  div:last-child {
-    text-align: right;
-  }
-`;
-
-const IncomeSpan = styled.span`
-  color: blue;
-`;
-
-const ExpenseSpan = styled.span`
-  color: red;
-`;

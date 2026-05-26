@@ -1,101 +1,86 @@
-import styled from "styled-components";
-
 import Day from "../../assets/day.svg";
 import Month from "../../assets/month.svg";
 import Calendar from "../../assets/calendar.svg";
 import Revenue from "../../assets/revenue.svg";
 import Memo from "../../assets/memo.svg";
+
 import { Link } from "react-router-dom";
 
 const TopNav = () => {
   return (
-    <Container>
-      <Wrapper>
-        <IconLink to="/">
+    <nav
+      className="d-flex justify-content-between align-items-center position-fixed start-0 end-0 bg-white"
+      style={{
+        top: "50px",
+        height: "50px",
+        zIndex: 300,
+        marginTop: "10px",
+      }}
+    >
+      <div
+        className="pb-3 d-flex justify-content-evenly align-items-center w-100 border-bottom bg-white"
+        style={{
+          height: "50px",
+          // fontSize: "0.8rem",
+        }}
+      >
+        <Link
+          to="/"
+          className="d-flex flex-column align-items-center text-decoration-none text-dark"
+        >
           <div>
-            <img src={Day} alt="" />
+            <img src={Day} alt="일일" style={{ width: "1.5rem" }} />
           </div>
+
           <div>일일</div>
-        </IconLink>
-        <IconLink to={`/month`}>
+        </Link>
+
+        <Link
+          to="/month"
+          className="d-flex flex-column align-items-center text-decoration-none text-dark"
+        >
           <div>
-            <img src={Month} alt="" />
+            <img src={Month} alt="월별" style={{ width: "1.5rem" }} />
           </div>
+
           <div>월별</div>
-        </IconLink>
-        <IconLink to={`/calendar`}>
+        </Link>
+
+        <Link
+          to="/calendar"
+          className="d-flex flex-column align-items-center text-decoration-none text-dark"
+        >
           <div>
-            <img src={Calendar} alt="" />
+            <img src={Calendar} alt="달력" style={{ width: "1.5rem" }} />
           </div>
+
           <div>달력</div>
-        </IconLink>
-        <IconLink to="/summary">
+        </Link>
+
+        <Link
+          to="/summary"
+          className="d-flex flex-column align-items-center text-decoration-none text-dark"
+        >
           <div>
-            <img src={Revenue} alt="" />
+            <img src={Revenue} alt="결산" style={{ width: "1.5rem" }} />
           </div>
+
           <div>결산</div>
-        </IconLink>
-        <IconLink to={`/memo`}>
+        </Link>
+
+        <Link
+          to="/memo"
+          className="d-flex flex-column align-items-center text-decoration-none text-dark"
+        >
           <div>
-            <img src={Memo} alt="" />
+            <img src={Memo} alt="메모" style={{ width: "1.5rem" }} />
           </div>
+
           <div>메모</div>
-        </IconLink>
-      </Wrapper>
-    </Container>
+        </Link>
+      </div>
+    </nav>
   );
 };
 
 export default TopNav;
-
-const Container = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
-  width: 100%;
-  box-sizing: border-box;
-  opacity: 1;
-  z-index: 300;
-  position: fixed !important;
-  top: 50px !important;
-  left: 0;
-  right: 0;
-  margin-top: 10px;  
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-  font-size: 0.8rem;
-  background-color: rgba(255, 255, 255, 1);  
-  border-bottom: 1px solid lightgray;
-  a {
-    text-decoration: none;
-    color: black;
-  }
-  span {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-color: gray;
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 14px;
-    padding-left: 2px;
-    position: absolute;
-  }
-`;
-
-const IconLink = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  img {
-    width: 1.5rem;
-  }
-`;

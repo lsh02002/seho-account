@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 
@@ -13,48 +12,41 @@ const Layout = ({
   const navigator = useNavigate();
 
   return (
-    <Container>
+    <div
+      className="d-flex justify-content-center align-items-center w-100"
+      style={{
+        paddingBottom: "100px",
+      }}
+    >
       {isTopNav && <Header />}
-      <Wrapper style={isTopNav ? { paddingTop: "50px" } : {}}>
+
+      <div
+        className="d-flex justify-content-center align-items-center w-100 mx-3"
+        style={isTopNav ? { paddingTop: "80px" } : {}}
+      >
         {children}
-      </Wrapper>
+      </div>
+
       {isTopNav && (
-        <AddTransButton onClick={() => navigator("/add-transaction")}>
+        <button
+          onClick={() => navigator("/add-transaction")}
+          className="btn position-fixed rounded-circle"
+          style={{
+            width: "60px",
+            height: "60px",
+            right: "10px",
+            bottom: "80px",
+            zIndex: 200,
+            backgroundColor: "lightblue",
+            border: "none",
+            fontSize: "25px",
+          }}
+        >
           +
-        </AddTransButton>
+        </button>
       )}
-    </Container>
+    </div>
   );
 };
 
 export default Layout;
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding-bottom: 100px;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 0 20px;
-  box-sizing: border-box;
-`;
-
-const AddTransButton = styled.button`
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  border: none;
-  background-color: lightblue;
-  font-size: 25px;
-  right: 10px;
-  bottom: 80px;
-  z-index: 200;
-`;

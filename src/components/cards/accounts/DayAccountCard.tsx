@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import styled from "styled-components";
 import { transactionResponseType } from "../../../types/type";
 import TransCardOne from "./TransCardOne";
 
@@ -12,10 +11,12 @@ const DayAccountCard = ({ filteredList, date }: AccountDayPagePropsType) => {
   const { incomeTotal, expenseTotal, total } = useMemo(() => {
     let income = 0;
     let expense = 0;
+
     for (const it of filteredList) {
       if (it.type === "INCOME") income += it.amount;
       else if (it.type === "EXPENSE") expense += it.amount;
     }
+
     return {
       incomeTotal: income,
       expenseTotal: expense,
@@ -24,65 +25,30 @@ const DayAccountCard = ({ filteredList, date }: AccountDayPagePropsType) => {
   }, [filteredList]);
 
   return (
-    <div key={date}>
-      <TodayTotal>
-        <TodayDate>기입일: {date}</TodayDate>
-        <MoneyInfo>
-          <Total>총합:{total.toLocaleString()}원</Total>
-          <IncomeTotal>수입:{incomeTotal.toLocaleString()}원</IncomeTotal>
-          <ExpenseTotal>
-            지출:
-            {expenseTotal.toLocaleString()}원
-          </ExpenseTotal>
-        </MoneyInfo>
-        {filteredList.map((item) => (
-          <TransCardOne key={item.id} item={item} />
-        ))}
-      </TodayTotal>
+    <div className="bg-white mt-4">
+      <div className="rounded p-3 w-100 d-flex flex-column align-items-center">
+        <div className="w-100 text-danger mb-2">기입일: {date}</div>
+
+        <div className="w-100 d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+          <div className="fw-bold">총합: {total.toLocaleString()}원</div>
+
+          <div className="text-primary">
+            수입: {incomeTotal.toLocaleString()}원
+          </div>
+
+          <div className="text-danger">
+            지출: {expenseTotal.toLocaleString()}원
+          </div>
+        </div>
+
+        <div className="w-100">
+          {filteredList.map((item) => (
+            <TransCardOne key={item.id} item={item} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
 export default DayAccountCard;
-
-const TodayTotal = styled.div`
-  margin-top: 30px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 0.9rem;
-  border: 1px solid #d0d0d0;
-  padding: 10px;
-  border-radius: 8px;
-  box-sizing: border-box;
-`;
-
-const TodayDate = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  color: red;
-`;
-
-const MoneyInfo = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-`;
-
-const Total = styled.div`
-  font-weight: bold;
-`;
-
-const IncomeTotal = styled.div`
-  color: blue;
-`;
-
-const ExpenseTotal = styled.div`
-  color: red;
-`;

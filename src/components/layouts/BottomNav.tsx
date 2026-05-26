@@ -1,118 +1,72 @@
-import styled from "styled-components";
-
 import Account from "../../assets/account.svg";
 import Statics from "../../assets/statics.svg";
 import MyPage from "../../assets/my-page.svg";
 import Cart from "../../assets/cart.svg";
+
 import { Link } from "react-router-dom";
 
 const BottomNav = () => {
-
   return (
-    <Container>
-      <Wrapper>
-        <IconLink to="/">
+    <nav
+      className="d-flex justify-content-between align-items-center border-top position-fixed bottom-0 start-0 end-0 bg-white"
+      style={{
+        height: "70px",
+        zIndex: 200,
+      }}
+    >
+      <div
+        className="d-flex justify-content-evenly align-items-center w-100"
+        style={{
+          height: "70px",
+          // fontSize: "0.8rem",
+        }}
+      >
+        <Link
+          to="/"
+          className="d-flex flex-column align-items-center text-decoration-none text-dark"
+        >
           <div>
-            <img src={Account} alt="" />
+            <img src={Account} alt="가계부" style={{ width: "2rem" }} />
           </div>
+
           <div>가계부</div>
-        </IconLink>
-        <IconLink to={`/statics`}>
+        </Link>
+
+        <Link
+          to="/statics"
+          className="d-flex flex-column align-items-center text-decoration-none text-dark"
+        >
           <div>
-            <img src={Statics} alt="" />
+            <img src={Statics} alt="통계" style={{ width: "2rem" }} />
           </div>
+
           <div>통계</div>
-        </IconLink>
-        <IconLink to={`/mypage/REVIEWS?page=1&size=4`}>
+        </Link>
+
+        <Link
+          to="/mypage/REVIEWS?page=1&size=4"
+          className="d-flex flex-column align-items-center text-decoration-none text-dark"
+        >
           <div>
-            <img src={MyPage} alt="" />
+            <img src={MyPage} alt="마이페이지" style={{ width: "2rem" }} />
           </div>
+
           <div>마이페이지</div>
-        </IconLink>
-        {/* {!isLogin ? (
-          <>            
-            <IconLink to="/login">
-              <div>
-                <img src={Login} alt="" />
-              </div>
-              <div>LOGIN</div>
-            </IconLink>
-          </>
-        ) : (
-          <>
-            <IconLink onClick={OnLogout} to={""}>
-              <div>
-                <img src={Logout} alt="" />
-              </div>
-              <div>LOGOUT</div>
-            </IconLink>
-          </>
-        )} */}
-        <>
-          {/* <Link to="/pay">PAY</Link> */}
-          <IconLink
-            to="/cart"           
-          >
-            <div>
-              <img src={Cart} alt="" />              
-            </div>
-            <div>장바구니</div>
-          </IconLink>          
-        </>
-      </Wrapper>
-    </Container>
+        </Link>
+
+        <Link
+          to="/cart"
+          className="d-flex flex-column align-items-center text-decoration-none text-dark position-relative"
+        >
+          <div>
+            <img src={Cart} alt="장바구니" style={{ width: "2rem" }} />
+          </div>
+
+          <div>장바구니</div>
+        </Link>
+      </div>
+    </nav>
   );
 };
 
 export default BottomNav;
-
-const Container = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 70px;
-  width: 100%;
-  box-sizing: border-box;
-  opacity: 1;
-  z-index: 200;
-  border-top: 1px solid lightgray;
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0;
-  right: 0;
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-  height: 70px;
-  font-size: 0.8rem;
-  background-color: rgba(255, 255, 255, 1);
-  a {
-    text-decoration: none;
-    color: black;
-  }
-  span {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-color: gray;
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 14px;
-    padding-left: 2px;
-    position: absolute;
-  }
-`;
-
-const IconLink = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  img {
-    width: 2rem;
-  }
-`;

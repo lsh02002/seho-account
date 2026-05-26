@@ -1,21 +1,21 @@
 import React from "react";
+
 import Layout from "../../components/layouts/Layout";
 import PieAccountChart from "../../components/cards/statics/PieAccountChart";
-import styled from "styled-components";
 
 const StaticsPage = () => {
   return (
     <Layout>
-      <Container>
+      <div
+        className="w-100"
+        style={{
+          marginTop: "70px",
+        }}
+      >
         <PieAccountChart />
-      </Container>
+      </div>
     </Layout>
   );
 };
 
 export default StaticsPage;
-
-const Container = styled.div`
-  width: 100%;
-  margin-top: 70px;
-`;

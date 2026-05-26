@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Layout from "../../components/layouts/Layout";
-import styled from "styled-components";
 import { transactionResponseType } from "../../types/type";
 import { useLogin } from "../../context/loginContext";
 import { format, isSameMonth, parseISO } from "date-fns";
@@ -19,7 +18,7 @@ const DayAccountPage = () => {
   }, [myBook, setIsDayDate]);
 
   const monthTransList = transList?.filter((t: transactionResponseType) =>
-    isSameMonth(parseISO(t.transactionDate), startDate!)
+    isSameMonth(parseISO(t.transactionDate), startDate!),
   );
 
   const markedDates = (monthTransList ?? []).reduce<
@@ -27,7 +26,7 @@ const DayAccountPage = () => {
   >((acc, current) => {
     const formattedDate = format(
       new Date(current.transactionDate),
-      "yyyy-MM-dd"
+      "yyyy-MM-dd",
     );
     acc[formattedDate] = { marked: true };
     return acc;
@@ -35,8 +34,9 @@ const DayAccountPage = () => {
 
   return (
     <Layout isTopNav={true}>
-      <TransWrapper>
-        <Title>일일 기입내역</Title>
+      <div className="d-flex flex-column w-100 pt-5">
+        <h3>일일 기입내역</h3>
+
         {Object.entries(markedDates)?.length > 0 ? (
           Object.entries(markedDates)
             .sort(([a], [b]) => new Date(b).getTime() - new Date(a).getTime())
@@ -46,8 +46,9 @@ const DayAccountPage = () => {
                   monthTransList?.filter(
                     (item) =>
                       format(new Date(item.transactionDate), "yyyy-MM-dd") ===
-                      date
+                      date,
                   ) ?? [];
+
                 return (
                   <DayAccountCard
                     key={date}
@@ -55,25 +56,16 @@ const DayAccountPage = () => {
                     date={date}
                   />
                 );
-              } else {
-                return null;
               }
+
+              return null;
             })
         ) : (
           <NoTransactions />
         )}
-      </TransWrapper>
+      </div>
     </Layout>
   );
 };
 
 export default DayAccountPage;
-
-const TransWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding-top: 50px;
-`;
-
-const Title = styled.h3``;
