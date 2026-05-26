@@ -26,7 +26,6 @@ const SignupPage = () => {
     // };
     // UserSignupApi(data)
     //   .then((res) => {
-    //     // console.log(res);
     //     navigate("/login");
     //   })
     //   .catch((err) => {

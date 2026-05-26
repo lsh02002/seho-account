@@ -64,8 +64,6 @@ const AddTransPage = () => {
     };
 
     setTransList((prev) => [...prev, transaction]);
-
-    console.log(transaction);
   };
 
   return (
