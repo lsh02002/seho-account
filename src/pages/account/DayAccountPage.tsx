@@ -1,15 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import Layout from "../../components/layouts/Layout";
 import { transactionResponseType } from "../../types/type";
 import { useLogin } from "../../context/loginContext";
 import { format, isSameMonth, parseISO } from "date-fns";
 import DayAccountCard from "../../components/cards/accounts/DayAccountCard";
 import NoTransactions from "../../components/layouts/NoTransactions";
+import { useLocation } from "react-router-dom";
 
 const DayAccountPage = () => {
-  const { myBook, startDate } = useLogin();
-  const { transList } = useLogin();
-  const { setIsDayDate } = useLogin();
+  const location = useLocation();
+
+  const weekFilteredList = useMemo(() => {
+    return location.state?.weekFilteredList ?? [];
+  }, [location.state]);
+
+  const { myBook, startDate, transList, setIsDayDate } = useLogin();
 
   useEffect(() => {
     if (myBook) {
@@ -17,20 +22,34 @@ const DayAccountPage = () => {
     }
   }, [myBook, setIsDayDate]);
 
-  const monthTransList = transList?.filter((t: transactionResponseType) =>
-    isSameMonth(parseISO(t.transactionDate), startDate!),
-  );
+  const monthTransList = useMemo(() => {
+    if (weekFilteredList.length > 0) {
+      return weekFilteredList;
+    }
 
-  const markedDates = (monthTransList ?? []).reduce<
-    Record<string, { marked: boolean }>
-  >((acc, current) => {
-    const formattedDate = format(
-      new Date(current.transactionDate),
-      "yyyy-MM-dd",
+    return transList?.filter((t: transactionResponseType) =>
+      isSameMonth(parseISO(t.transactionDate), startDate!),
     );
-    acc[formattedDate] = { marked: true };
-    return acc;
-  }, {});
+  }, [weekFilteredList, transList, startDate]);
+
+  const markedDates: Record<string, { marked: boolean }> = useMemo(() => {
+    return (monthTransList ?? []).reduce(
+      (
+        acc: Record<string, { marked: boolean }>,
+        current: transactionResponseType,
+      ) => {
+        const formattedDate = format(
+          new Date(current.transactionDate),
+          "yyyy-MM-dd",
+        );
+
+        acc[formattedDate] = { marked: true };
+
+        return acc;
+      },
+      {} as Record<string, { marked: boolean }>,
+    );
+  }, [monthTransList]);
 
   return (
     <Layout isTopNav={true}>
@@ -44,7 +63,7 @@ const DayAccountPage = () => {
               if (value.marked) {
                 const filteredList =
                   monthTransList?.filter(
-                    (item) =>
+                    (item: transactionResponseType) =>
                       format(new Date(item.transactionDate), "yyyy-MM-dd") ===
                       date,
                   ) ?? [];

@@ -11,6 +11,7 @@ import {
   isWithinInterval,
 } from "date-fns";
 import { ko } from "date-fns/locale";
+import { useNavigate } from "react-router-dom";
 
 type MonthCardPropsType = {
   filteredList: transactionResponseType[];
@@ -46,6 +47,8 @@ const formatRange = (start: Date, end: Date) =>
   })}`;
 
 const MonthAccountCard = ({ filteredList, date }: MonthCardPropsType) => {
+  const navigate = useNavigate();
+
   const monthDate = useMemo(() => {
     const normalized = date.length === 7 ? `${date}-01` : date;
     return toDate(normalized);
@@ -115,23 +118,41 @@ const MonthAccountCard = ({ filteredList, date }: MonthCardPropsType) => {
       </div>
 
       <div>
-        {weekly.map((w) => (
-          <div key={w.label} className="border-top p-3 m-3 small">
-            <div className="mb-1">{w.label}</div>
+        {weekly.map((w) => {
+          const weekFilteredList = filteredList.filter(
+            (item) =>
+              toDate(item.transactionDate) >= toDate(w.start) &&
+              toDate(item.transactionDate) <= toDate(w.end),
+          );
 
-            <div className="d-flex flex-wrap gap-3">
-              <div>총합: {w.total.toLocaleString()}원</div>
+          return (
+            <div
+              key={w.label}
+              className="border-top p-3 m-3 small"
+              onClick={() => {
+                navigate("/", {
+                  state: {
+                    weekFilteredList,
+                  },
+                });
+              }}
+            >
+              <div className="mb-1">{w.label}</div>
 
-              <div className="text-primary">
-                수입: {w.income.toLocaleString()}원
-              </div>
+              <div className="d-flex flex-wrap gap-3">
+                <div>총합: {w.total.toLocaleString()}원</div>
 
-              <div className="text-danger">
-                지출: {w.expense.toLocaleString()}원
+                <div className="text-primary">
+                  수입: {w.income.toLocaleString()}원
+                </div>
+
+                <div className="text-danger">
+                  지출: {w.expense.toLocaleString()}원
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {weekly.every((w) => w.income === 0 && w.expense === 0) && (
           <div className="text-secondary mt-2 m-2 small">

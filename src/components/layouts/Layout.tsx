@@ -25,7 +25,7 @@ const Layout = ({
     <div
       className="d-flex justify-content-center align-items-center w-100 p-4"
       style={{
-        paddingBottom: "100px",
+        marginBottom: "120px",
       }}
     >
       {isTopNav && <Header />}
