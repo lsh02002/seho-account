@@ -31,7 +31,7 @@ const Layout = ({
       {isTopNav && <Header />}
 
       <SlidePanel title="거래내역 수정" zIndex={200} name="transmodify">
-        <ModifyTransPage transModalId={transactionId ?? 0} />
+        <ModifyTransPage transactionId={transactionId ?? 0} />
       </SlidePanel>
 
       <SlidePanel title="거래내역 기입" zIndex={200} name="transadd">

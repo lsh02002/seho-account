@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Back from "../../assets/back.svg";
 import { useLogin } from "../../context/loginContext";
 
-const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
+const ModifyTransPage = ({ transactionId }: { transactionId?: number }) => {
   const navigator = useNavigate();
   const typeList = ["INCOME", "EXPENSE"];
   const [type, setType] = useState("INCOME");
@@ -24,8 +24,8 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
   );
 
   const transaction = useMemo(
-    () => transList?.find((t) => t.id === Number(transModalId)),
-    [transList, transModalId],
+    () => transList?.find((t) => t.id === Number(transactionId)),
+    [transList, transactionId],
   );
 
   useEffect(() => {
@@ -70,13 +70,13 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
     }
 
     setTransList((prev) =>
-      prev.filter((trans) => trans.id !== Number(transModalId)),
+      prev.filter((trans) => trans.id !== Number(transactionId)),
     );
   };
 
   const handleRegister = () => {
     const transaction: transactionResponseType = {
-      id: Number(transModalId),
+      id: Number(transactionId),
       bookId: myBook?.id ?? 0,
       categoryName:
         filteredCateList?.find((cate) => cate.id === selected)?.name ?? "",
@@ -88,7 +88,7 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
     };
 
     setTransList((prev) =>
-      prev.map((obj) => (obj.id === Number(transModalId) ? transaction : obj)),
+      prev.map((obj) => (obj.id === Number(transactionId) ? transaction : obj)),
     );
   };
 
