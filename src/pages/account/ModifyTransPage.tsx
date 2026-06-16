@@ -6,7 +6,7 @@ import { useLogin } from "../../context/loginContext";
 
 const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
   const navigator = useNavigate();
-  const { bookId, transactionId } = useParams();
+  const { transactionId } = useParams();
   const typeList = ["INCOME", "EXPENSE"];
   const [type, setType] = useState("INCOME");
 
@@ -73,18 +73,14 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
 
     setTransList((prev) =>
       prev.filter(
-        (trans) =>
-          !(
-            trans.bookId === Number(bookId) &&
-            trans.id === Number(transactionId)
-          ),
+        (trans) => trans.id !== Number(transModalId ?? transactionId),
       ),
     );
   };
 
   const handleRegister = () => {
     const transaction: transactionResponseType = {
-      id: Number(transactionId),
+      id: Number(transModalId ?? transactionId),
       bookId: myBook?.id ?? 0,
       categoryName:
         filteredCateList?.find((cate) => cate.id === selected)?.name ?? "",
@@ -96,7 +92,9 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
     };
 
     setTransList((prev) =>
-      prev.map((obj) => (obj.id === Number(transactionId) ? transaction : obj)),
+      prev.map((obj) =>
+        obj.id === Number(transModalId ?? transactionId) ? transaction : obj,
+      ),
     );
   };
 
