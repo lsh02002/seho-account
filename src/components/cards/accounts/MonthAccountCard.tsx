@@ -9,6 +9,7 @@ import {
   parseISO,
   format,
   isWithinInterval,
+  endOfDay,
 } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +33,7 @@ const getWeeksOfMonth = (monthDate: Date) => {
 
     return {
       start: weekStart,
-      end: realEnd,
+      end: endOfDay(realEnd),
       days: eachDayOfInterval({
         start: weekStart,
         end: realEnd,
@@ -119,12 +120,6 @@ const MonthAccountCard = ({ filteredList, date }: MonthCardPropsType) => {
 
       <div>
         {weekly.map((w) => {
-          const weekFilteredList = filteredList.filter(
-            (item) =>
-              toDate(item.transactionDate) >= toDate(w.start) &&
-              toDate(item.transactionDate) <= toDate(w.end),
-          );
-
           return (
             <div
               key={w.label}
@@ -132,7 +127,8 @@ const MonthAccountCard = ({ filteredList, date }: MonthCardPropsType) => {
               onClick={() => {
                 navigate("/", {
                   state: {
-                    weekFilteredList,
+                    weekStart: w.start,
+                    weekEnd: w.end,
                   },
                 });
               }}

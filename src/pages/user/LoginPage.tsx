@@ -21,7 +21,7 @@ const LoginPage = () => {
   return (
     <Layout>
       <div
-        className="d-flex justify-content-center align-items-center flex-column border p-4 mt-5"
+        className="bg-white d-flex justify-content-center align-items-center flex-column p-4 mt-5"
         style={{
           width: "360px",
           boxSizing: "border-box",

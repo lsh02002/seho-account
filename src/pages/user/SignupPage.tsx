@@ -17,30 +17,12 @@ const SignupPage = () => {
     setState({ ...state, [e.target.name]: e.target.value });
   };
 
-  const OnSignup = () => {
-    // const data: userSignupType = {
-    //   email: state.email,
-    //   password: state.password,
-    //   passwordConfirm: state.passwordConfirm,
-    //   nickname: state.nickname,
-    // };
-    // UserSignupApi(data)
-    //   .then((res) => {
-    //     navigate("/login");
-    //   })
-    //   .catch((err) => {
-    //     if (err?.response?.data?.detailMessage) {
-    //       setErrMessage(err.response.data.detailMessage);
-    //     } else {
-    //         setErrMessage(err?.message);
-    //     }
-    //   });
-  };
+  const OnSignup = () => {};
 
   return (
     <Layout>
       <div
-        className="d-flex justify-content-center align-items-center flex-column border p-4 mt-5"
+        className="bg-white d-flex justify-content-center align-items-center flex-column p-4 mt-5"
         style={{
           width: "360px",
           boxSizing: "border-box",
