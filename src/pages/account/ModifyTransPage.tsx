@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { categoryType, transactionResponseType } from "../../types/type";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Back from "../../assets/back.svg";
 import { useLogin } from "../../context/loginContext";
 
 const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
   const navigator = useNavigate();
-  const { transactionId } = useParams();
   const typeList = ["INCOME", "EXPENSE"];
   const [type, setType] = useState("INCOME");
 
@@ -25,9 +24,8 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
   );
 
   const transaction = useMemo(
-    () =>
-      transList?.find((t) => t.id === Number(transModalId ?? transactionId)),
-    [transList, transModalId, transactionId],
+    () => transList?.find((t) => t.id === Number(transModalId)),
+    [transList, transModalId],
   );
 
   useEffect(() => {
@@ -44,7 +42,7 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
     setAmount(transaction.amount);
     setNote(transaction.note);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transList, transaction, transactionId]);
+  }, [transList, transaction]);
 
   const handleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.target.value);
@@ -72,15 +70,13 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
     }
 
     setTransList((prev) =>
-      prev.filter(
-        (trans) => trans.id !== Number(transModalId ?? transactionId),
-      ),
+      prev.filter((trans) => trans.id !== Number(transModalId)),
     );
   };
 
   const handleRegister = () => {
     const transaction: transactionResponseType = {
-      id: Number(transModalId ?? transactionId),
+      id: Number(transModalId),
       bookId: myBook?.id ?? 0,
       categoryName:
         filteredCateList?.find((cate) => cate.id === selected)?.name ?? "",
@@ -92,9 +88,7 @@ const ModifyTransPage = ({ transModalId }: { transModalId?: number }) => {
     };
 
     setTransList((prev) =>
-      prev.map((obj) =>
-        obj.id === Number(transModalId ?? transactionId) ? transaction : obj,
-      ),
+      prev.map((obj) => (obj.id === Number(transModalId) ? transaction : obj)),
     );
   };
 

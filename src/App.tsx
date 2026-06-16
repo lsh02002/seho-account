@@ -5,8 +5,6 @@ import { Analytics } from "@vercel/analytics/react";
 import LoginPage from "./pages/user/LoginPage";
 import SignupPage from "./pages/user/SignupPage";
 import DayAccountPage from "./pages/account/DayAccountPage";
-import AddTransPage from "./pages/account/AddTransPage";
-import ModifyTransPage from "./pages/account/ModifyTransPage";
 import MonthAccountPage from "./pages/account/MonthAccountPage";
 import CalendarAccountPage from "./pages/account/CalendarAccountPage";
 import MemoPage from "./pages/account/MemoPage";
@@ -35,11 +33,6 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<DayAccountPage />} />
-          <Route path="/add-transaction" element={<AddTransPage />} />
-          <Route
-            path="/modify-transaction/:bookId/:transactionId"
-            element={<ModifyTransPage />}
-          />
           <Route path="/calendar" element={<CalendarAccountPage />} />
           <Route path="/month" element={<MonthAccountPage />} />
           <Route path="/summary" element={<SummaryPage />} />
